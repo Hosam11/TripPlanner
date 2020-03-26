@@ -9,16 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -26,18 +29,26 @@ import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE;
-
 
 public class Home extends AppCompatActivity {
 
     private static final String TAG = "hproj";
+    // recycleView
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     HomeAdapter homeAdapter;
 
     List<String> names;
     String deleteName;
+    // recycleView
+
+    // nav drawer
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private NavigationView navigationView;
+    // nav drawer
+
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +56,41 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         recyclerView = findViewById(R.id.rvHome);
+        mToolbar =  findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawer);
 
 
-        // just test
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        // TODO you must use that coz i set app them to no actice theme
+     //  getSupportActionBar().setTitle("Upcoming");
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar,R.string.Open, R.string.Close);
+        mDrawerToggle.syncState();
+
+        navigationView = findViewById(R.id.nv);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            switch (id) {
+                case R.id.account:
+                    Toast.makeText(Home.this, "My Account", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.settings:
+                    Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.mycart:
+                    Toast.makeText(Home.this, "My Cart", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    return true;
+            }
+            return true;
+        });
+
+
+
+        // TODO sadasd
+          // just test
         names = new ArrayList<>();
         names.add("ali");
         names.add("hossam");
@@ -59,6 +102,9 @@ public class Home extends AppCompatActivity {
         names.add("hend");
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
+
+        //  #>> Start Handler RecycleView
+        // custom line sperator
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
@@ -66,7 +112,6 @@ public class Home extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        // custom line sperator
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
 
@@ -74,7 +119,6 @@ public class Home extends AppCompatActivity {
         verticalDecoration.setDrawable(verticalDivider);
 
         recyclerView.addItemDecoration(verticalDecoration);
-
 
         homeAdapter = new HomeAdapter(this, names);
         recyclerView.setAdapter(homeAdapter);
@@ -93,7 +137,6 @@ public class Home extends AppCompatActivity {
                 int postion = viewHolder.getAdapterPosition();
                 switch (direction) {
                     case ItemTouchHelper.LEFT:
-                        //
                         deleteName = names.get(postion);
                         names.remove(postion);
                         homeAdapter.notifyItemRemoved(postion);
@@ -106,7 +149,6 @@ public class Home extends AppCompatActivity {
                         Log.i(TAG, "onSwiped: delete + pos " + postion);
                         break;
                     case ItemTouchHelper.RIGHT:
-                        //
                         names.remove(postion);
                         homeAdapter.notifyItemRemoved(postion);
                         Intent intent = new Intent(Home.this, MainActivity.class);
@@ -133,6 +175,9 @@ public class Home extends AppCompatActivity {
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(simpleCallback);
         itemTouchhelper.attachToRecyclerView(recyclerView);
+
+        // #>> End Handler RecycleView
+
     }
 
     @Override
@@ -143,12 +188,15 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item))
+            return true;
         switch (item.getItemId()) {
             case R.id.barBtnAdd:
                 Intent intent = new Intent(Home.this, MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(this, "add trip", Toast.LENGTH_SHORT).show();
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

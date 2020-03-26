@@ -5,11 +5,8 @@
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/barBtnAdd"
-
-        android:theme="@style/myActionButtonHomeStyle"
         android:title="@string/barBtnAddtrip"
         android:icon="@drawable/ic_add_black_24dp"
-        app:popupTheme="@style/myActionButtonHomeStyle"
         app:showAsAction="ifRoom" />
 
 </menu>

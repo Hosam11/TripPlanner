@@ -60,7 +60,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
         public HomeViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTripName = itemView.findViewById(R.id.tvTripName);
+            tvTripName = itemView.findViewById(R.id.tvTripNameHome);
             consSingleRow = itemView.findViewById(R.id.singleRowHome);
         }
     }
