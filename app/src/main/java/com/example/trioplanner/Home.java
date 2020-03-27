@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +23,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -41,14 +44,17 @@ public class Home extends AppCompatActivity {
     List<String> names;
     String deleteName;
     // recycleView
-
+    TextView tvNavName;
+    TextView tvNavEmail;
     // nav drawer
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView navigationView;
-    // nav drawer
 
+    private View navHeader;
+    // nav drawer
     private Toolbar mToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,41 +62,59 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         recyclerView = findViewById(R.id.rvHome);
-        mToolbar =  findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
+        // Navigation Drawer
         drawerLayout = findViewById(R.id.drawer);
-
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         // TODO you must use that coz i set app them to no actice theme
-     //  getSupportActionBar().setTitle("Upcoming");
+        getSupportActionBar().setTitle("Upcoming");
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar,R.string.Open, R.string.Close);
+        // #>>  Start Navigation Drawer
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.Open, R.string.Close);
         mDrawerToggle.syncState();
 
         navigationView = findViewById(R.id.nv);
+        // Navigation view header
+        navHeader = navigationView.getHeaderView(0);
+
+        tvNavName = navHeader.findViewById(R.id.tvNavName);
+        tvNavEmail = navHeader.findViewById(R.id.tvNavEmail);
+        ImageView ivPhoto = navHeader.findViewById(R.id.img_header_bg);
+        String url = "https://static.asianetnews.com/images/01dbf5q7xb1jhrrvdvfg1fgn3z/Arya-Stark_300x250xt.jpg";
+        Glide.with(this).load(url)
+                .into(ivPhoto);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
+
             switch (id) {
-                case R.id.account:
-                    Toast.makeText(Home.this, "My Account", Toast.LENGTH_SHORT).show();
+                case R.id.nav_upcoming:
+                    Log.i(TAG, "onCreate:  Upc ");
+                    Toast.makeText(Home.this, "Upc", Toast.LENGTH_SHORT).show();
                     break;
-                case R.id.settings:
+                case R.id.nav_History:
                     Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
                     break;
-                case R.id.mycart:
-                    Toast.makeText(Home.this, "My Cart", Toast.LENGTH_SHORT).show();
+                case R.id.nav_sync:
+                    Toast.makeText(Home.this, "Sync", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.nav_log_out:
+                    Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     return true;
             }
             return true;
         });
-
+        tvNavName.setText("ali");
+        tvNavEmail.setText("hello@example.com");
+        // #>> End Navigation Drawer
 
 
         // TODO sadasd
-          // just test
+        // just test
         names = new ArrayList<>();
         names.add("ali");
         names.add("hossam");

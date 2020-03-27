@@ -24,14 +24,5 @@
 
     <include layout="@layout/content_home" />
 
-    <!--<androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHome"
-
-        android:layout_width="271dp"
-        android:layout_height="483dp"
-
-
-        />-->
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

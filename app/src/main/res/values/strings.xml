@@ -11,12 +11,10 @@
 
     <!--Start For NavDrawer-->
     <!-- Navigation Drawer menu labels -->
-    <string name="nav_home">Home</string>
-    <string name="nav_photos">Photos</string>
-    <string name="nav_movies">Movies</string>
+    <string name="nav_upcoming">Upcoming</string>
+    <string name="nav_History">History</string>
     <string name="nav_notifications">Notifications</string>
-    <string name="nav_settings">Settings</string>
-    <string name="nav_about_us">About Us</string>
+    <string name="nav_sync">Sync</string>
     <string name="log_out">Logout</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
