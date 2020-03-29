@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">TrioPlanner</string>
     <string name="welcome_login">Hello there, Welcome Back</string>
+    <string name="welcome_signup">Welcome Back</string>
+    <string name="signup_to_organize_your_journey">Signup to organize your journey</string>
+    <string name="email">Email</string>
     <string name="sign_in_to_continue">Sign In to continue</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
