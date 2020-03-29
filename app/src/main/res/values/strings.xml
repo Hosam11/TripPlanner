@@ -9,4 +9,48 @@
     <string name="repeat">Repeat</string>
     <string name="notes">Your Notes</string>
     <string name="roundtrip">Round Trip</string>
+    <string name="barBtnAddtrip">addTrip</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="Open">open</string>
+    <string name="Close">Close</string>
+    <string name="upcoming_activity_title">Upcoming</string>
+
+
+    <!--Start For NavDrawer-->
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_upcoming">Upcoming</string>
+    <string name="nav_History">History</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_sync">Sync</string>
+    <string name="log_out">Logout</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Home</item>
+        <item>Photos</item>
+        <item>Movies</item>
+        <item>Notifications</item>
+        <item>Settings</item>
+    </string-array>
+    <!--End For NavDrawer-->
+
+
+
+<!--     <string name="app_name">TrioPlanner</string> -->
+
+
+    <string name="welcome_login">Hello there, Welcome Back</string>
+    <string name="sign_in_to_continue">Sign In to continue</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="new_user_sign_up">New User? SIGN UP</string>
+    <string name="welcome_signup">Welcome</string>
+    <string name="signup_to_organize_your_journey">SignUp to organize your Journey</string>
+    <string name="email">Email</string>
+    <string name="go">Go</string>
+    <string name="remember_me">Remember Me</string>
+
 </resources>
