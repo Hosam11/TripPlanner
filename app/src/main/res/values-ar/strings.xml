@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">منظم رحلاتك</string>
+    <string name="startpoint">نقطة البداية</string>
+    <string name="endpoint">نقطة الوصول</string>
+    <string name="date">التاريخ</string>
+    <string name="time">الوقت</string>
+    <string name="addtrip">اضف الرحلة</string>
+    <string name="triptitle">عنوان الرحلة</string>
+    <string name="repeat">تكرار</string>
+    <string name="notes">ملاحظاتك</string>
+    <string name="roundtrip">ذهاب و عودة</string>
+</resources>
