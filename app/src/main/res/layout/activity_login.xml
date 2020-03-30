@@ -29,8 +29,6 @@
         android:transitionName="logo_text"
         android:textColor="#000"/>
 
-    <!-- TODO salah where is that file
-  -->
 
     <TextView
         android:id="@+id/slogan_name"

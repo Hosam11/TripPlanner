@@ -17,11 +17,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
         android:text="@string/welcome_signup"
         android:textColor="#000"
-        android:fontFamily="@font/bungee"
         android:textSize="40sp"></TextView>
-    <!--    TODO salh a      android:fontFamily="@font/bungee"  -->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
