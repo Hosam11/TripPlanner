@@ -3,6 +3,7 @@ package com.example.trioplanner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,32 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.trioplanner.data.Trip;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.trioplanner.Uitiles.TAG;
+
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
 
     Context context;
-    List<String> names;
+   // List<String> names;
+    List<Trip> trips = new ArrayList<>();
 
-    public HomeAdapter(Context context , List<String> names) {
+//    public HomeAdapter(Context context , List<String> names) {
+//        this.context = context;
+//        this.names = names;
+//    }
+
+    public HomeAdapter(Context context) {
         this.context = context;
-        this.names = names;
+    }
+
+    public void setTripsList(List<Trip> trips) {
+        this.trips = trips;
+        Log.i(TAG, "HomeAdapter >> setTripsList: tripsSize()"+ trips.size());
     }
 
     @NonNull
@@ -35,21 +52,22 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-        holder.tvTripName.setText(names.get(position));
+        holder.tvTripName.setText(trips.get(position).getName());
         holder.consSingleRow.setOnClickListener(v ->
                 Toast.makeText(context, "clicked show notes ", Toast.LENGTH_SHORT).show());
 
+        // if Needed
         holder.consSingleRow.setOnLongClickListener(v -> {
             Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
-            Toast.makeText(context, "long clicked edit trip ", Toast.LENGTH_SHORT).show();
+           // context.startActivity(intent);
+           // Toast.makeText(context, "long clicked edit trip ", Toast.LENGTH_SHORT).show();
             return true;
         });
     }
 
     @Override
     public int getItemCount() {
-        return names.size();
+        return trips.size();
     }
 
     public class HomeViewHolder extends RecyclerView.ViewHolder {
