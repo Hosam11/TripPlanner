@@ -14,12 +14,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button add = findViewById(R.id.addTrip);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddTrip.class);
-                startActivity(intent);
-            }
+        add.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,AddTrip.class);
+            startActivity(intent);
         });
     }
 }

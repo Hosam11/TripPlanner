@@ -10,6 +10,22 @@ public class comments {
 
 // "-M3hJ0NJTZo_IpcsenSn"
 
+/*
+    Trip trip = new Trip("data viet",
+            "bahary",
+            "sidi bish",
+            "15/9/2012",
+            "dad visit",
+            "one way",
+            "buy some fruit",
+            "upcomming");*/
+
+
+    //  homePresenter.onSaveTrip(trip);
+    // take the trip that i want to updated
+    //  homePresenter.onUpdateTrip(trip.getId(),trip);
+
+
     /*
 
  // just test
@@ -233,5 +249,80 @@ getSupportActionBar().setDisplayShowTitleEnabled(false);
         };*/
 
 
+    /**
+     * /**
+     *      * Firebase apps automatically handle temporary network interruptions.
+     *      * Cached data is available while offline and Firebase resends any writes
+     *      * when network connectivity is restored.
+     *      * When you enable disk persistence, your app writes the data locally to the device
+     *      * so your app can maintain state while offline,
+     *      * even if the user or operating system restarts the app.
+     *      * You can enable disk persistence with just one line of code.
+     *      *
+      /**
+      *      * The Firebase Realtime Database synchronizes and stores a local copy of the data
+      *      * for active listeners. In addition, you can keep specific locations in sync.
+      *      *
+
+    */
+
+    /*
+
+
+   /* public void queryRecentScores() {
+        Log.i(TAG, "OfflinebeFirebase >> first of queryRecentScores: ");
+        // [START rtdb_query_recent_scores]
+        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference(mAuth.getUid());
+        Offline offline = new Offline();
+
+        scoresRef.addChildEventListener(offline);
+      }*/
+    /*
+    public void onDisconnect() {
+        // [START rtdb_on_disconnect_set]
+        DatabaseReference presenceRef = FirebaseDatabase.getInstance()
+                .getReference("disconnectmessage");
+        // Write a string when this client loses connection
+        presenceRef.onDisconnect().setValue("I disconnected!");
+        // [END rtdb_on_disconnect_set]
+
+        // [START rtdb_on_disconnect_remove]
+        presenceRef.onDisconnect().removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, @NonNull DatabaseReference reference) {
+                if (error != null) {
+                    Log.d(TAG, "could not establish onDisconnect event:" +
+                            error.getMessage());
+                }
+            }
+        });
+        Log.i(TAG, "OfflinebeFirebase >> onDisconnect: ");
+    }
+
+    public void getConnectionState() {
+        // [START rtdb_listen_connected]
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Log.i(TAG, "OfflinebeFirebase >> connected");
+                } else {
+                    Log.i(TAG, "OfflinebeFirebase >> not connected");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "OfflinebeFirebase >> Listener was cancelled");
+            }
+        });
+        // [END rtdb_listen_connected]
+        Log.i(TAG, "OfflinebeFirebase >> getConnectionState: ");
+    }
+
+
+    */
 
 }

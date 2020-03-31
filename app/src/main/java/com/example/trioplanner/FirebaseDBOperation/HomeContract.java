@@ -6,17 +6,18 @@ import java.util.List;
 
 public interface HomeContract {
 
-
-    interface HomeView {
-
+    interface Progress {
         void showProgress();
 
         void hideProgress();
+    }
+
+    interface HomeView extends Progress{
+
 
         // return string to ui wheart succes or not
-        void onTripSaveSuccess(String state);
+     //   void onTripSaveSuccess(String state);
 
-        void onTripSaveFailed(String state);
 
         void getAllTrips(List<Trip> trips);
 
@@ -30,6 +31,7 @@ public interface HomeContract {
         void onGetAllTrips();
 
         // will be in the Impl call back method recive data changed succsess or not
+        void onTripSaveFailed(String state);
 
         void onDeleteTrip(String id);
 
@@ -37,24 +39,32 @@ public interface HomeContract {
 
     }
 
+    interface AddTripView {
+        // return string to ui wheart succes or not
+        void onTripSaveSuccess(String state);
 
-    interface FirebaseModel{
+    }
+
+
+    interface FirebaseModel {
 
         void saveTripToFB(SaveTripListener saveTripListener, Trip trip);
+
+        void getAllTrips(GetAllTripLisnter getAllTripLisnter);
+
+        void deleteTrip(String id);
+
+        void updateTrip(String id, Trip trip);
+
         interface SaveTripListener {
             void onFinishedSaved(String status);
         }
 
-        void getAllTrips(GetAllTripLisnter getAllTripLisnter);
-        interface  GetAllTripLisnter{
+        interface GetAllTripLisnter {
             void onGetAllTripsComplete(List<Trip> trip);
         }
 
-        void deleteTrip(String id);
-        void updateTrip(String id, Trip trip);
-
     }
-
 
 
 }

@@ -1,19 +1,31 @@
 package com.example.trioplanner.FirebaseDBOperation;
 
+import android.util.Log;
+
 import com.example.trioplanner.data.Trip;
 
 import java.util.List;
 
-public class HomePresenterImpl implements HomeContract.HomePresenter,
-        HomeContract.FirebaseModel.SaveTripListener, HomeContract.FirebaseModel.GetAllTripLisnter {
 
+public class HomePresenterImpl implements HomeContract.HomePresenter,
+        HomeContract.FirebaseModel.SaveTripListener,
+        HomeContract.FirebaseModel.GetAllTripLisnter {
+
+    public static final String TAG = "hproj";
     HomeContract.FirebaseModel firebaseModel;
     HomeContract.HomeView homeView;
+    HomeContract.AddTripView addTripView;
 
-
-    public HomePresenterImpl(HomeContract.FirebaseModel firebaseModel, HomeContract.HomeView homeView) {
+    public HomePresenterImpl(HomeContract.FirebaseModel firebaseModel,
+                             HomeContract.HomeView homeView) {
         this.firebaseModel = firebaseModel;
         this.homeView = homeView;
+    }
+
+    public HomePresenterImpl(HomeContract.FirebaseModel firebaseModel,
+                             HomeContract.AddTripView addTripView) {
+        this.firebaseModel = firebaseModel;
+        this.addTripView = addTripView;
     }
 
     @Override
@@ -23,8 +35,14 @@ public class HomePresenterImpl implements HomeContract.HomePresenter,
 
     @Override
     public void onGetAllTrips() {
+        Log.i(TAG, "HomePresenterImpl >> onGetAllTrips: ");
         homeView.showProgress();
         firebaseModel.getAllTrips(this);
+    }
+
+    @Override
+    public void onTripSaveFailed(String state) {
+
     }
 
     @Override
@@ -39,7 +57,7 @@ public class HomePresenterImpl implements HomeContract.HomePresenter,
 
     @Override
     public void onFinishedSaved(String status) {
-        homeView. onTripSaveSuccess(status);
+        addTripView.onTripSaveSuccess(status);
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.trioplanner;
+package com.example.trioplanner.HomeView;
 
 
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.trioplanner.MainActivity;
+import com.example.trioplanner.R;
 import com.example.trioplanner.data.Trip;
 
 import java.util.ArrayList;
@@ -53,8 +55,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         holder.tvTripName.setText(trips.get(position).getName());
-        holder.consSingleRow.setOnClickListener(v ->
-                Toast.makeText(context, "clicked show notes ", Toast.LENGTH_SHORT).show());
+        holder.consSingleRow.setOnClickListener(v -> {
+//                Intent addTripIntent =
+                Toast.makeText(context, "clicked show notes ", Toast.LENGTH_SHORT).show();
+        });
 
         // if Needed
         holder.consSingleRow.setOnLongClickListener(v -> {
@@ -71,7 +75,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     }
 
     public class HomeViewHolder extends RecyclerView.ViewHolder {
-
 
         View consSingleRow;
         TextView tvTripName;

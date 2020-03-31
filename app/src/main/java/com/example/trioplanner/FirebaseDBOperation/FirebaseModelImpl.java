@@ -19,10 +19,11 @@ import java.util.List;
 
 public class FirebaseModelImpl implements HomeContract.FirebaseModel {
 
-    static {
-       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-    }
     private static final String TAG = "hproj";
+
+    static {
+        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -35,34 +36,34 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
     SaveTripListener saveTripListener;
     GetAllTripLisnter getAllTripLisnter;
 
-    OfflinebeFirebase offline = new OfflinebeFirebase();
+    //OfflinebeFirebase offline;
 
     public FirebaseModelImpl() {
-
+        //offline = new OfflinebeFirebase();
 
 
         tripsReturned = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
         if (database == null) {
-          //  database.getInstance().setPersistenceEnabled(true);
+            //  database.getInstance().setPersistenceEnabled(true);
             database = FirebaseDatabase.getInstance();
 
-            Log.i(TAG, "FirebaseModelImpl: >>  mAuth.getUid" + mAuth.getUid());
-            // TODO replace "hossam" with  {mAuth.getUid()} when login activity finished
+            //Log.i(TAG, "FirebaseModelImpl: >>  mAuth.getUid" + mAuth.getUid());
 
-            dbReference = database.getReference("hossam");
+            dbReference = database.getReference(mAuth.getUid());
         }
-
+        /*
         offline.keepSynced();
         offline.queryRecentScores();
         offline.onDisconnect();
         offline.getConnectionState();
+        */
 
         dbReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.i(TAG, "getAllTripLisnter >> onDataChange: ");
+                Log.i(TAG, "FirebaseModelImpl >> getAllTripLisnter >> onDataChange: ");
                 // it's important to clear the list before retrive data so can n't appand to list
                 // and return to view a huge elements
                 tripsReturned.clear();
@@ -71,16 +72,21 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
                     //   Log.i(TAG, "onDataChange: tripNa/**/me  >> " +snapshot.getValue(Trip.class).getName());
                 }
 
+                Log.i(TAG, "FirebaseModelImpl >> onDataChange:  " +
+                        " listSize >> " + tripsReturned.size());
+
+
                 if (getAllTripLisnter != null) {
-                    Log.i(TAG, "onDataChange*getAllTripLisnter != null* ");
+                  //  Log.i(TAG, "onDataChange*getAllTripLisnter != null* ");
                     getAllTripLisnter.onGetAllTripsComplete(tripsReturned);
 
                 } else if (saveTripListener != null) {
-                    Log.i(TAG, "onDataChange*saveTripListener != null* ");
+                    Log.i(TAG, "FirebaseModelImpl >> onDataChange*saveTripListener != null* ");
                     saveTripListener.onFinishedSaved("Success");
                 }
-                Log.i(TAG, "FirebaseModelImpl >> onDataChange: " + tripsReturned.size());
+                   //  Log.i(TAG, "FirebaseModelImpl >> onDataChange: tripsReturnedSize >>  " + tripsReturned.size());
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.i(TAG, "loadPost:onCancelled", databaseError.toException());
@@ -93,14 +99,14 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
      * save single trip to db
      *
      * @param saveTripListener : ref of that interface so i can use it in the callback method
-     *                         *                             onDataChanged to call from it method inside presenter when save in fb
+     *                         onDataChanged to call from it method inside presenter when save in fb
      * @param trip
      */
     @Override
     public void saveTripToFB(SaveTripListener saveTripListener, Trip trip) {
         // save trip in data base and when finised
         // >> send response code to view through presenter
-        Log.i(TAG, "getAllTripLisnter saveTripToFB: ");
+        Log.i(TAG, "FirebaseModelImpl >> saveTripToFB: ");
         id = dbReference.push().getKey();
         trip.setId(id);
 //        trip.set
@@ -108,14 +114,13 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
         this.saveTripListener = saveTripListener;
 
         saveTask.addOnSuccessListener(o -> {
-            Log.i(TAG, "addOnSuccessListener: ");
+            Log.i(TAG, "FirebaseModelImpl >> addOnSuccessListener: ");
         });
-        
+
         saveTask.addOnFailureListener(e -> {
-            Log.i(TAG, "addOnFailureListener: ");
+            Log.i(TAG, "FirebaseModelImpl >> addOnFailureListener: ");
         });
     }
-    
 
     /**
      * get all trips
@@ -125,7 +130,7 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
      */
     @Override
     public void getAllTrips(GetAllTripLisnter getAllTripLisnter) {
-        Log.i(TAG, "FirebaseModelImpl >> getAllTrips: ");
+       // Log.i(TAG, "FirebaseModelImpl >> getAllTrips: ");
         this.getAllTripLisnter = getAllTripLisnter;
         //  getAllTripLisnter.onGetAllTripsComplete(trips);
     }
@@ -141,7 +146,7 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
 
         Task updateTask = dbReference.child("/" + id).setValue(trip);
         updateTask.addOnCompleteListener(o -> {
-            Log.i(TAG, "ClassName updateTrip: "+ getClass().getSimpleName());
+            Log.i(TAG, "ClassName updateTrip: " + getClass().getSimpleName());
             Log.i(getClass().getSimpleName(), " >> updateTrip: ");
         });
 

@@ -1,7 +1,6 @@
 package com.example.trioplanner.login;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.example.trioplanner.MainActivity;
+import com.example.trioplanner.HomeView.Home;
 import com.example.trioplanner.R;
 import com.example.trioplanner.signup.SignupActivity;
 
@@ -53,8 +52,9 @@ public class LoginActivity extends AppCompatActivity implements ILogin.IView {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         if(SaveSharedPreference.getLoggedStatus(getApplicationContext())) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), Home.class);
             startActivity(intent);
+
         } else {
             scrollView.setVisibility(View.VISIBLE);
         }
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements ILogin.IView {
     public void onLoginSuccess() {
         endProgress();
         SaveSharedPreference.setLoggedIn(getApplicationContext(), true);
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), Home.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

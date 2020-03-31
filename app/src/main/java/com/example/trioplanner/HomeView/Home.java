@@ -1,4 +1,4 @@
-package com.example.trioplanner;
+package com.example.trioplanner.HomeView;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -24,10 +24,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.example.trioplanner.AddTrip;
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
+import com.example.trioplanner.MainActivity;
+import com.example.trioplanner.R;
+import com.example.trioplanner.Uitiles;
 import com.example.trioplanner.data.Trip;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,12 +38,13 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+import static com.example.trioplanner.Uitiles.TAG;
 
 public class Home extends AppCompatActivity implements HomeContract.HomeView {
 
-    private static final String TAG = "hproj";
+    //private static final String TAG = "hproj";
     // recycleView
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -49,6 +53,7 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
     // dummy data fro reyclr view
 //    List<String> names;
 //    String deleteName;
+
 
     // action when Undo delete trip
     List<Trip> tripsList;
@@ -171,7 +176,11 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         // >> MVP
         homePresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
 
-        homePresenter.onGetAllTrips();
+        // TODO add contion chech connectivity
+        if (Uitiles.checkInternetState(this)){
+            homePresenter.onGetAllTrips();
+        }
+        Log.i(TAG, "Home >> onCreate: ");
 
     }
 
@@ -188,22 +197,9 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         switch (item.getItemId()) {
             case R.id.barBtnAdd:
                 // TODO change that by add activity
-//                Intent intent = new Intent(Home.this, MainActivity.class);
-//                startActivity(intent);
-                Toast.makeText(this, "add trip", Toast.LENGTH_SHORT).show();
-                // Save Works
-                // dummy data
-                Trip trip = new Trip("data viet",
-                        "bahary",
-                        "sidi bish",
-                        "15/9/2012",
-                        "dad visit",
-                        "one way",
-                        "buy some fruit",
-                        "upcomming");
-                homePresenter.onSaveTrip(trip);
-                // take the trip that i want to updated
-                //  homePresenter.onUpdateTrip(trip.getId(),trip);
+                Intent addTripIntent = new Intent(this, AddTrip.class);
+                startActivity(addTripIntent);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -220,20 +216,10 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
     }
 
     @Override
-    public void onTripSaveSuccess(String state) {
-        Log.i(TAG, "onTripSaveSuccess: ");
-    }
-
-    @Override
-    public void onTripSaveFailed(String state) {
-        Log.i(TAG, "onTripSaveFailed: ");
-    }
-
-    @Override
     public void getAllTrips(List<Trip> trips) {
         // revive in that value coz i need to use it in swip delete
         if (tripsList != null) {
-            Log.i(TAG, "getAllTrips: TripsList !=null ");
+            Log.i(TAG, "Home >> getAllTrips: TripsList !=null ");
             tripsList.clear();
         }
         for (Trip t : trips) {
@@ -241,8 +227,8 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         }
         homeAdapter.setTripsList(tripsList);
         homeAdapter.notifyDataSetChanged();
-        Log.i(TAG, "setTripsToList: trips.size " + tripsList.size());
-        Log.i(TAG, "setTripsToList: trips.size " + trips.size());
+        Log.i(TAG, "Home >> setTripsToList: trips.size " + tripsList.size());
+        Log.i(TAG, "Home >> setTripsToList: trips.size " + trips.size());
 
     }
 
