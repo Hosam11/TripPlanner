@@ -1,12 +1,25 @@
 package com.example.trioplanner.firebase;
 
+
 import androidx.annotation.NonNull;
 
 import com.example.trioplanner.signup.ISignUp;
+
+import android.app.Activity;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.example.trioplanner.signup.ISignUp;
+import com.example.trioplanner.signup.SignupActivity;
+import com.example.trioplanner.signup.SignupPresenter;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
 
 public class FirebaseAuthClass implements ISignUp.Model {
     private ISignUp.onRegistrationListener registrationListener;
@@ -29,6 +42,6 @@ public class FirebaseAuthClass implements ISignUp.Model {
                         }
                     }
                 });
-
     }
+
 }

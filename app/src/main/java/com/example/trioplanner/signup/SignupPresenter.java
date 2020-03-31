@@ -1,5 +1,6 @@
 package com.example.trioplanner.signup;
 
+
 import com.example.trioplanner.firebase.FirebaseAuthClass;
 
 public class SignupPresenter implements ISignUp.Presenter,ISignUp.onRegistrationListener{
@@ -24,5 +25,6 @@ public class SignupPresenter implements ISignUp.Presenter,ISignUp.onRegistration
     public SignupPresenter(ISignUp.View view) {
         this.view = view;
         authClass = new FirebaseAuthClass(this);
+
     }
 }

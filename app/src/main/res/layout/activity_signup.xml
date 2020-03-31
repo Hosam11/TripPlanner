@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +8,7 @@
 <LinearLayout
 android:layout_width="match_parent"
 android:layout_height="match_parent"
+
     android:background="#fff"
     android:orientation="vertical"
     android:padding="20dp"
@@ -26,6 +28,7 @@ android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:text="@string/welcome_signup"
         android:textColor="#000"
+
         android:textSize="40sp"></TextView>
     <!--    TODO salh a      android:fontFamily="@font/bungee"  -->
     <TextView
@@ -83,10 +86,10 @@ android:layout_height="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:hint="@string/password2"
             app:passwordToggleEnabled="true">
@@ -121,6 +124,7 @@ android:layout_height="match_parent"
 
     </LinearLayout>
 
+
     <ProgressBar
         android:id="@+id/progressBar3"
         style="?android:attr/progressBarStyle"
@@ -132,3 +136,4 @@ android:layout_height="match_parent"
 </LinearLayout>
 
 </ScrollView>
+

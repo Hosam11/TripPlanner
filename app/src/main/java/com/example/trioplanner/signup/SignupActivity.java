@@ -2,6 +2,7 @@ package com.example.trioplanner.signup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,10 +22,12 @@ public class SignupActivity extends AppCompatActivity implements ISignUp.View {
     ProgressBar progressBar;
     private String email,password,password2;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
         edtEmail = findViewById(R.id.emailEd);
         edtPassword = findViewById(R.id.passwordED);
         edtPassword2 = findViewById(R.id.passwordED2);
@@ -52,6 +55,7 @@ public class SignupActivity extends AppCompatActivity implements ISignUp.View {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+
             }
         });
     }
@@ -97,10 +101,10 @@ public class SignupActivity extends AppCompatActivity implements ISignUp.View {
     public void onRegistrationSuccess() {
         endProgress();
         Toast.makeText(this,"Done",Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
+
     public void onRegistrationFailure(String message) {
         endProgress();
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
@@ -115,4 +119,5 @@ public class SignupActivity extends AppCompatActivity implements ISignUp.View {
     public void endProgress() {
         progressBar.setVisibility(View.GONE);
     }
+
 }
