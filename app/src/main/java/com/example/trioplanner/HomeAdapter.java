@@ -56,10 +56,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         holder.consSingleRow.setOnClickListener(v ->
                 Toast.makeText(context, "clicked show notes ", Toast.LENGTH_SHORT).show());
 
+        // if Needed
         holder.consSingleRow.setOnLongClickListener(v -> {
             Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
-            Toast.makeText(context, "long clicked edit trip ", Toast.LENGTH_SHORT).show();
+           // context.startActivity(intent);
+           // Toast.makeText(context, "long clicked edit trip ", Toast.LENGTH_SHORT).show();
             return true;
         });
     }

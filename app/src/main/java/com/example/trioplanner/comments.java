@@ -7,7 +7,6 @@ public class comments {
         and anthor to return the rest of trips
     */
     // TODO display message when saved success
-    // TODO add maps to open all map in google map
 
 // "-M3hJ0NJTZo_IpcsenSn"
 
@@ -39,6 +38,73 @@ public class comments {
 
     0error.team.2.0.1.9@gmail.com
     0errorteam2020
+
+
+        scoresRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChild) {
+                Log.i(TAG, "The " + snapshot.getKey() + " dinosaur's score is " + snapshot.getValue());
+                Log.i(TAG, "onChildAdded: ");
+            }
+
+            // [START_EXCLUDE]
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onChildRemoved: ");
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.i(TAG, "onChildMoved: ");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i(TAG, "onCancelled: ");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.i(TAG, "onChildChanged: ");
+            }
+            // [END_EXCLUDE]
+        });
+        // [END rtdb_query_recent_scores]        Assume that the user loses connection, goes offline, and restarts the app.
+         While still offline, the app queries for the last two items from the same location.
+         This query will successfully return the last two items
+         because the app had loaded all four items in the query above.
+
+
+        / [START rtdb_query_recent_scores_overlap]
+        scoresRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChild) {
+                Log.d(TAG, "The " + snapshot.getKey() + " dinosaur's score is " + snapshot.getValue());
+            }
+
+            // [START_EXCLUDE]
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onChildRemoved: ");
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.i(TAG, "onChildMoved: ");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i(TAG, "onCancelled: ");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.i(TAG, "onChildChanged: ");
+            }
+            // [END_EXCLUDE]
+        });
+        // [END rtdb_query_recent_scores_overlap]
 
 
 

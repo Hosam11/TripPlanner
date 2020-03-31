@@ -26,10 +26,6 @@
 
         <activity android:name=".signup.SignupActivity"></activity>
 
-        <activity android:name=".LoginActivity">
-
-        </activity>
-
         <activity android:name=".MainActivity">
 
         </activity>

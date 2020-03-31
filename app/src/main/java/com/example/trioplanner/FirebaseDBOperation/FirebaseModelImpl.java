@@ -5,10 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.trioplanner.data.Trip;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,13 +14,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class FirebaseModelImpl implements HomeContract.FirebaseModel {
 
+    static {
+       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
     private static final String TAG = "hproj";
 
     FirebaseAuth mAuth;
@@ -37,18 +35,29 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
     SaveTripListener saveTripListener;
     GetAllTripLisnter getAllTripLisnter;
 
+    OfflinebeFirebase offline = new OfflinebeFirebase();
+
     public FirebaseModelImpl() {
+
+
+
         tripsReturned = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
         if (database == null) {
+          //  database.getInstance().setPersistenceEnabled(true);
             database = FirebaseDatabase.getInstance();
-            // >> 1 <<
-            //
+
             Log.i(TAG, "FirebaseModelImpl: >>  mAuth.getUid" + mAuth.getUid());
             // TODO replace "hossam" with  {mAuth.getUid()} when login activity finished
+
             dbReference = database.getReference("hossam");
         }
+
+        offline.keepSynced();
+        offline.queryRecentScores();
+        offline.onDisconnect();
+        offline.getConnectionState();
 
         dbReference.addValueEventListener(new ValueEventListener() {
             @Override

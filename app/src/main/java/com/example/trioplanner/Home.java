@@ -65,6 +65,7 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView navigationView;
     private View navHeader;
+    ImageView ivNavHeader;
     // toolBarAction
     private Toolbar mToolbar;
 
@@ -99,11 +100,10 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         navHeader = navigationView.getHeaderView(0);
         tvNavName = navHeader.findViewById(R.id.tvNavName);
         tvNavEmail = navHeader.findViewById(R.id.tvNavEmail);
-        ImageView ivPhoto = navHeader.findViewById(R.id.img_header_bg);
-        String url = "https://static.asianetnews.com/images/01dbf5q7xb1jhrrvdvfg1fgn3z/Arya-Stark_300x250xt.jpg";
+         ivNavHeader = navHeader.findViewById(R.id.img_header_bg);
+//        String url = "https://static.asianetnews.com/images/01dbf5q7xb1jhrrvdvfg1fgn3z/Arya-Stark_300x250xt.jpg";
 
-        Glide.with(this).load(url)
-                .into(ivPhoto);
+//        Glide.with(this).load(url).into(ivPhoto);
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -120,6 +120,9 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
                     break;
                 case R.id.nav_log_out:
                     Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.nav_map:
+                    Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     return true;

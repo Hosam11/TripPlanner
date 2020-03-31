@@ -33,8 +33,8 @@ public class HomePresenterImpl implements HomeContract.HomePresenter,
     }
 
     @Override
-    public void onUpdateTrip(String id) {
-        firebaseModel.updateTrip(id);
+    public void onUpdateTrip(String id, Trip trip) {
+        firebaseModel.updateTrip(id, trip);
     }
 
     @Override
