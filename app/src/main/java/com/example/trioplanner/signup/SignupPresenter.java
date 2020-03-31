@@ -1,35 +1,30 @@
 package com.example.trioplanner.signup;
 
-import android.view.View;
 
 import com.example.trioplanner.firebase.FirebaseAuthClass;
 
-public class SignupPresenter implements ISignUp.IPresenter {
-    ISignUp.IView iView;
+public class SignupPresenter implements ISignUp.Presenter,ISignUp.onRegistrationListener{
 
-    public SignupPresenter(ISignUp.IView iView) {
-        this.iView = iView;
+    private ISignUp.View view;
+    private FirebaseAuthClass authClass;
+    @Override
+    public void register(String email, String password) {
+        authClass.performFirebaseRegistration(email, password);
     }
 
     @Override
-    public void onGoClicked(String email , String password) {
-        FirebaseAuthClass firebaseAuthClass = new FirebaseAuthClass(iView);
-//        boolean flag =
-        firebaseAuthClass.createNewUser(email,password);
-
+    public void onSuccess() {
+        view.onRegistrationSuccess();
     }
 
     @Override
-    public void onLoginClicked() {
-
+    public void onFailure(String message) {
+        view.onRegistrationFailure(message);
     }
 
-    @Override
-    public void onResult(boolean flag , String msg) {
-        if(flag){
-            iView.onSuccess();
-        } else {
-            iView.onFailure(msg);
-        }
+    public SignupPresenter(ISignUp.View view) {
+        this.view = view;
+        authClass = new FirebaseAuthClass(this);
+
     }
 }
