@@ -11,6 +11,10 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
+import com.example.trioplanner.FirebaseDBOperation.HomeContract;
+import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
+import com.example.trioplanner.data.Trip;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
@@ -19,7 +23,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddTrip extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class AddTrip extends AppCompatActivity implements
+        TimePickerDialog.OnTimeSetListener,
+        DatePickerDialog.OnDateSetListener,
+        HomeContract.AddTripView {
+
+
+    HomeContract.HomePresenter addTripPresenter;
+
     @BindView(R.id.name)
     TextInputEditText name;
     @BindView(R.id.epoint)
@@ -34,15 +45,23 @@ public class AddTrip extends AppCompatActivity implements TimePickerDialog.OnTim
     TextInputEditText notes;
     @BindView(R.id.roundTrip)
     CheckBox round;
+
     @OnClick(R.id.add) void addTrip(View view){
         String tripName = name.getText().toString();
         String tripStartPoint= startPoint.getText().toString();
         String tripEndPoint = endPoint.getText().toString();
-        Boolean tripRound  = isRoundTrip();
+        String tripType  = String.valueOf(isRoundTrip());
         String tripDate = date.getText().toString();
         String tripTime=time.getText().toString();
         String tripNotes=notes.getText().toString();
-        String tripStatus = "upComing";
+        String tripStatus = "Upcoming";
+
+        //  name - startLoc -  endLoc -  date -  time -  type -  notes
+        Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
+                tripType, tripNotes, tripStatus);
+
+        addTripPresenter.onSaveTrip(trip);
+        finish();
     }
 
 
@@ -67,11 +86,15 @@ public class AddTrip extends AppCompatActivity implements TimePickerDialog.OnTim
         getTime();
         //Toast.makeText(this,"Butter knife working !",Toast.LENGTH_LONG).show();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
         ButterKnife.bind(this);
+
+        addTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
+
 
     }
 
@@ -89,5 +112,11 @@ public class AddTrip extends AppCompatActivity implements TimePickerDialog.OnTim
         calendar.set(Calendar.MONTH,month);
         calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
         date.setText(dayOfMonth+"/"+month+"/"+year);
+    }
+
+
+    @Override
+    public void onTripSaveSuccess(String state) {
+
     }
 }

@@ -12,6 +12,7 @@ public class Trip {
     private String time;
     private String type;
     private String notes;
+    //  name - startLoc -  endLoc -  date -  time -  type -  notes
     // canceld - finished - or waiting
     private String status;
 
@@ -19,7 +20,8 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(String name, String startLoc, String endLoc, String date, String time, String type, String notes, String status) {
+    public Trip(String name, String startLoc, String endLoc, String date,
+                String time, String type, String notes, String status) {
         this.name = name;
         this.startLoc = startLoc;
         this.endLoc = endLoc;

@@ -4,123 +4,133 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.trioplanner.data.Trip;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.trioplanner.Uitiles.TAG;
 
 
 public class OfflinebeFirebase {
 
-    String TAG = "hoff";
+    List<Trip> tripsReturnedOffline;
 
-    /**
-     * Firebase apps automatically handle temporary network interruptions.
-     * Cached data is available while offline and Firebase resends any writes
-     * when network connectivity is restored.
-     * When you enable disk persistence, your app writes the data locally to the device
-     * so your app can maintain state while offline,
-     * even if the user or operating system restarts the app.
-     * You can enable disk persistence with just one line of code.
-     */
+    FirebaseAuth mAuth;
 
-    /**
-     * The Firebase Realtime Database synchronizes and stores a local copy of the data
-     * for active listeners. In addition, you can keep specific locations in sync.
-     */
-    public void keepSynced() {
-        // [START rtdb_keep_synced]
-        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("hossam");
+    public OfflinebeFirebase() {
+        tripsReturnedOffline = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
+        DatabaseReference scoresRef = FirebaseDatabase.getInstance()
+                .getReference(mAuth.getUid());
+
         scoresRef.keepSynced(true);
-        // [END rtdb_keep_synced]
 
-        // [START rtdb_undo_keep_synced]
-
-        //scoresRef.keepSynced(false);
-        // [END rtdb_undo_keep_synced]
-        Log.i(TAG, "keepSynced: ");
-    }
-
-    public void queryRecentScores() {
-        Log.i(TAG, "first of queryRecentScores: ");
-        // [START rtdb_query_recent_scores]
-        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("hossam");
         Offline offline = new Offline();
 
         scoresRef.addChildEventListener(offline);
-      }
 
-    public void onDisconnect() {
-        // [START rtdb_on_disconnect_set]
+        scoresRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i(TAG, "<< OfflinebeFirebase >> onDataChange:  ");
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    tripsReturned.add(snapshot.getValue(Trip.class));
+                       Log.i(TAG, "<OFF>onDataChange: tripName  >> " +snapshot.getValue(Trip.class).getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //DatabaseReference scoresRef2 = FirebaseDatabase.getInstance().getReference(mAuth.getUid());
         DatabaseReference presenceRef = FirebaseDatabase.getInstance()
                 .getReference("disconnectmessage");
         // Write a string when this client loses connection
         presenceRef.onDisconnect().setValue("I disconnected!");
-        // [END rtdb_on_disconnect_set]
 
-        // [START rtdb_on_disconnect_remove]
         presenceRef.onDisconnect().removeValue((error, reference) -> {
             if (error != null) {
-                Log.i(TAG, "could not establish onDisconnect event:" + error.getMessage());
+                Log.d(TAG, "could not establish onDisconnect event:" +
+                        error.getMessage());
             }
         });
-        Log.i(TAG, "onDisconnect: ");
-    }
 
-    public void getConnectionState() {
-        // [START rtdb_listen_connected]
-        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance()
+                .getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (connected) {
-                    Log.i(TAG, "connected");
+                    Log.i(TAG, "OfflinebeFirebase >> connected");
                 } else {
-                    Log.i(TAG, "not connected");
+                    Log.i(TAG, "OfflinebeFirebase >> not connected");
+
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.i(TAG, "Listener was cancelled");
+                Log.i(TAG, "OfflinebeFirebase >> Listener was cancelled");
             }
         });
-        // [END rtdb_listen_connected]
-        Log.i(TAG, "getConnectionState: ");
+
     }
 
 
-
     class Offline implements ChildEventListener{
-
         @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-            Log.i(TAG, "The " + dataSnapshot.getKey() + " trips's score is " + dataSnapshot.getValue());
-            Log.i(TAG, "onChildAdded: ");
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot,
+                                 @androidx.annotation.Nullable String s) {
+         /*   Log.i(TAG, "#<<OffFB>>  Offline >> Key >> " +
+                    dataSnapshot.getKey() +
+                    " -- value >> " +
+                    dataSnapshot.getValue());*/
+
+            Trip trip = dataSnapshot.getValue(Trip.class);
+            Log.i("#<<OffFB>> Offline",
+                    trip.getId()+"/"+trip.getName());
+
+           // tripsReturnedOffline.clear();
+            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+               // tripsReturnedOffline.add(snapshot.getValue(Trip.class));
+            }
+
+//            Log.i(TAG, "OfflinebeFB>> Offline >> onChildAdded " +
+//                    " listSize() >> " + tripsReturnedOffline.size());
+//
         }
 
         @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot,
+                                   @androidx.annotation.Nullable String s) {
+            Log.i(TAG, "OfflinebeFB>> Offline >>  onChildChanged: ");
         }
 
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+            Log.i(TAG, "OfflinebeFirebase >>  Offline >> onChildRemoved: ");
         }
 
         @Override
         public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-
+            Log.i(TAG, "OfflinebeFirebase >> Offline >> onChildMoved: ");
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            Log.i(TAG, "OfflinebeFirebase >> Offline >> onCancelled: ");
         }
     }
 }

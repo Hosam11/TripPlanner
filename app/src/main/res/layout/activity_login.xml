@@ -21,7 +21,8 @@
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/icon"
-            android:transitionName="logo_image" />
+            android:transitionName="logo_image"
+            />
 
         <TextView
             android:id="@+id/logo_name"
@@ -56,7 +57,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email_login"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="h@h.com" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +74,8 @@
                     android:id="@+id/password_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="123456" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
