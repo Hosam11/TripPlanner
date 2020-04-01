@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
                 //alarmManager.cancel(pi);
             }
-    }
+    });
 
                                }
 }
