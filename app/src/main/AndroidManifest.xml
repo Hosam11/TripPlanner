@@ -3,6 +3,7 @@
     package="com.example.trioplanner">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,21 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".Test"></activity>
+        <activity
+            android:name=".histroy_view.HistroyView"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ViewEditTrip" />
         <activity
             android:name=".HomeView.Home"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".signup.SignupActivity">
-
-        </activity>
-
+        <activity android:name=".signup.SignupActivity" />
         <activity
             android:name=".AddTrip"
-            android:screenOrientation="portrait">
-
-        </activity>
-
+            android:screenOrientation="portrait" />
         <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,11 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity">
-
-        </activity>
-
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

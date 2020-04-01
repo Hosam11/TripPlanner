@@ -2,9 +2,11 @@ package com.example.trioplanner;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -26,14 +28,12 @@ import butterknife.OnClick;
 
 import static com.example.trioplanner.Uitiles.SAVED_OFFLINE;
 import static com.example.trioplanner.Uitiles.SAVED_ONLINE;
-import static com.example.trioplanner.Uitiles.checkInternetState;
+import static com.example.trioplanner.Uitiles.TAG;
 
-public class AddTrip extends AppCompatActivity implements
+public class ViewEditTrip extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
-        HomeContract.AddTripView {
-
-    HomeContract.HomePresenter addTripPresenter;
+        HomeContract.EditTripView {
 
     @BindView(R.id.name)
     TextInputEditText name;
@@ -50,6 +50,21 @@ public class AddTrip extends AppCompatActivity implements
     @BindView(R.id.roundTrip)
     CheckBox round;
 
+    @BindView(R.id.add)
+    Button btnViewEdit;
+
+    @BindView(R.id.addTime)
+    Button btnAddTime;
+
+    @BindView(R.id.addDate)
+    Button btnAddData;
+
+    Trip tripFormIntent;
+    boolean isView;
+
+    HomeContract.HomePresenter editTripPresenter;
+
+
     @OnClick(R.id.add)
     void addTrip(View view) {
         String tripName = name.getText().toString();
@@ -60,21 +75,56 @@ public class AddTrip extends AppCompatActivity implements
         String tripTime = time.getText().toString();
         String tripNotes = notes.getText().toString();
         String tripStatus = Uitiles.STATUS_UPCOMING;
+        Log.i(TAG, "addTrip: Click");
 
-        //  name - startLoc -  endLoc -  date -  time -  type -  notes
-        Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
-                tripType, tripNotes, tripStatus, SAVED_ONLINE);
-        if (checkInternetState(this)) {
-            trip.setIsSavedOnline(SAVED_ONLINE);
-            addTripPresenter.onSaveTrip(trip);
+        if (isView) {
+            btnViewEdit.setText("Submit");
+            name.setEnabled(true);
+            startPoint.setEnabled(true);
+            endPoint.setEnabled(true);
+            date.setEnabled(true);
+            time.setEnabled(true);
+            notes.setEnabled(true);
+            round.setEnabled(true);
+            btnAddData.setEnabled(true);
+            btnAddTime.setEnabled(true);
+            isView = false;
         } else {
-            trip.setIsSavedOnline(SAVED_OFFLINE);
-            // TODO 1- Salah add to room DB
+            //  name - startLoc -  endLoc -  date -  time -  type -  notes
+            Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
+                    tripType, tripNotes, tripStatus, SAVED_ONLINE);
+            trip.setId(tripFormIntent.getId());
+
+            // Edit in db
+            if (Uitiles.checkInternetState(this)) {
+                trip.setIsSavedOnline(SAVED_ONLINE);
+                editTripPresenter.onUpdateTrip(trip.getId(), trip);
+            } else {
+                trip.setIsSavedOnline(SAVED_OFFLINE);
+                  /* TODO  2- salah edit in room or shpw that below message
+                  if there not in room please sync with firebase
+                  in case he clicked the trip then try to to edit
+                  not yet that trip move to room
+                */
+            }
+
+            // after click submit set all inputs to disable to next click
+            btnViewEdit.setText("Edit");
+            isView = true;
+            name.setEnabled(false);
+            startPoint.setEnabled(false);
+            endPoint.setEnabled(false);
+            date.setEnabled(false);
+            time.setEnabled(false);
+            notes.setEnabled(false);
+            round.setEnabled(false);
+            btnAddData.setEnabled(false);
+            btnAddTime.setEnabled(false);
+            //finish();
         }
 
-        finish();
-    }
 
+    }
 
     private void getTime() {
         TimePickerFragment timePickerDialogFragment = new TimePickerFragment();
@@ -104,19 +154,28 @@ public class AddTrip extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_trip);
+        setContentView(R.layout.activity_view_edit_trip);
         ButterKnife.bind(this);
+        isView = true;
+        Intent intent = getIntent();
+        tripFormIntent = (Trip) intent.getSerializableExtra(Uitiles.KEY_PASS_TRIP);
+        name.setText(tripFormIntent.getName());
+        startPoint.setText(tripFormIntent.getStartLoc());
+        endPoint.setText(tripFormIntent.getEndLoc());
+        date.setText(tripFormIntent.getDate());
+        time.setText(tripFormIntent.getTime());
+        notes.setText(tripFormIntent.getNotes());
+        round.setChecked(Boolean.parseBoolean(tripFormIntent.getType()));
 
-        addTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
-
+        editTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
 
     }
-
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.i("TAG", "onTimeSet: ");
         time.setText(hourOfDay + ":" + minute);
+
     }
 
     @Override
@@ -130,7 +189,7 @@ public class AddTrip extends AppCompatActivity implements
 
 
     @Override
-    public void onTripSaveSuccess(String state) {
-       // Toast.makeText(this, "Trip Added Successfully", Toast.LENGTH_SHORT).show();
+    public void onUpdateTripSuccrss(String state) {
+        Toast.makeText(this, state, Toast.LENGTH_SHORT).show();
     }
 }
