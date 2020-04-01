@@ -1,8 +1,6 @@
 package com.example.trioplanner.signup;
 
 
-import com.example.trioplanner.firebase.FirebaseAuthClass;
-
 public class SignupPresenter implements ISignUp.Presenter,ISignUp.onRegistrationListener{
 
     private ISignUp.View view;

@@ -2,8 +2,10 @@ package com.example.trioplanner.data;
 
 import androidx.annotation.NonNull;
 
-public class Trip {
+import java.io.Serializable;
 
+public class Trip implements Serializable {
+    // auto-geneterd
     private String id; // will add to trip by firebase {getKey}
     private String name;
     private String startLoc;
@@ -12,16 +14,20 @@ public class Trip {
     private String time;
     private String type;
     private String notes;
+    // upcoimg - cancell - done
+    private String status;
+    // t or f
+    private String isSavedOnline; //
+
     //  name - startLoc -  endLoc -  date -  time -  type -  notes
     // canceld - finished - or waiting
-    private String status;
 
 
     public Trip() {
     }
 
     public Trip(String name, String startLoc, String endLoc, String date,
-                String time, String type, String notes, String status) {
+                String time, String type, String notes, String status, String isSavedOnline) {
         this.name = name;
         this.startLoc = startLoc;
         this.endLoc = endLoc;
@@ -30,6 +36,16 @@ public class Trip {
         this.type = type;
         this.notes = notes;
         this.status = status;
+        this.isSavedOnline = isSavedOnline;
+
+    }
+
+    public String getIsSavedOnline() {
+        return isSavedOnline;
+    }
+
+    public void setIsSavedOnline(String isSavedOnline) {
+        this.isSavedOnline = isSavedOnline;
     }
 
     public String getId() {

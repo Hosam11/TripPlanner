@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import com.example.trioplanner.MainActivity;
 import com.example.trioplanner.R;
 import com.example.trioplanner.Uitiles;
 import com.example.trioplanner.data.Trip;
+import com.example.trioplanner.histroy_view.HistroyView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,13 +44,16 @@ import java.util.List;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import static com.example.trioplanner.Uitiles.TAG;
 
-public class Home extends AppCompatActivity implements HomeContract.HomeView {
+public class Home extends AppCompatActivity implements
+        HomeContract.HomeView,
+        HomeContract.DeleteTrip{
 
     //private static final String TAG = "hproj";
     // recycleView
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     HomeAdapter homeAdapter;
+    TextView empty_view;
 
     // dummy data fro reyclr view
 //    List<String> names;
@@ -64,6 +69,8 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
     TextView tvNavEmail;
     // MVP
     HomeContract.HomePresenter homePresenter;
+    HomeContract.HomePresenter homePresenterDelere;
+
     ProgressBar progressBar;
     // nav drawer
     private DrawerLayout drawerLayout;
@@ -76,10 +83,11 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        tripsList = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        tripsList = new ArrayList<>();
+        empty_view = findViewById(R.id.empty_view);
 
         recyclerView = findViewById(R.id.rvHome);
         mToolbar = findViewById(R.id.toolbar);
@@ -97,7 +105,8 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         getSupportActionBar().setTitle("Upcoming");
 
         // #>>  Start Navigation Drawer
-        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.Open, R.string.Close);
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+                mToolbar, R.string.Open, R.string.Close);
         mDrawerToggle.syncState();
         navigationView = findViewById(R.id.nv);
 
@@ -105,7 +114,7 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         navHeader = navigationView.getHeaderView(0);
         tvNavName = navHeader.findViewById(R.id.tvNavName);
         tvNavEmail = navHeader.findViewById(R.id.tvNavEmail);
-         ivNavHeader = navHeader.findViewById(R.id.img_header_bg);
+        ivNavHeader = navHeader.findViewById(R.id.img_header_bg);
 //        String url = "https://static.asianetnews.com/images/01dbf5q7xb1jhrrvdvfg1fgn3z/Arya-Stark_300x250xt.jpg";
 
 //        Glide.with(this).load(url).into(ivPhoto);
@@ -118,12 +127,15 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
                     Toast.makeText(Home.this, "Upc", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_History:
-                    Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
+                    Intent historyIntent = new Intent(this, HistroyView.class);
+                    startActivity(historyIntent);
+                   // Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_sync:
                     Toast.makeText(Home.this, "Sync", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_log_out:
+                    // TODO log-out btn
                     Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_map:
@@ -152,14 +164,19 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
 
         recyclerView.setLayoutManager(linearLayoutManager);
+     /*   RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(1000);
+        itemAnimator.setRemoveDuration(1000);
+        recyclerView.setItemAnimator(itemAnimator);*/
 
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
 
-        Drawable verticalDivider = ContextCompat.getDrawable(this, R.drawable.vertical_divider);
+        Drawable verticalDivider = ContextCompat.getDrawable(this,
+                R.drawable.vertical_divider);
         verticalDecoration.setDrawable(verticalDivider);
 
-        recyclerView.addItemDecoration(verticalDecoration);
+       // recyclerView.addItemDecoration(verticalDecoration);
 
         homeAdapter = new HomeAdapter(this);
 
@@ -174,11 +191,15 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         // #>> End Handler RecycleView
 
         // >> MVP
-        homePresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
-
+        homePresenter = new HomePresenterImpl(new FirebaseModelImpl(),
+                (HomeContract.HomeView) this);
+        homePresenterDelere = new HomePresenterImpl(new FirebaseModelImpl(),
+                (HomeContract.DeleteTrip) this);
         // TODO add contion chech connectivity
         if (Uitiles.checkInternetState(this)){
-            homePresenter.onGetAllTrips();
+            homePresenter.onGetUpcomingTrips();
+        } else {
+            // TODO 3- salag get from room db
         }
         Log.i(TAG, "Home >> onCreate: ");
 
@@ -196,7 +217,6 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
             return true;
         switch (item.getItemId()) {
             case R.id.barBtnAdd:
-                // TODO change that by add activity
                 Intent addTripIntent = new Intent(this, AddTrip.class);
                 startActivity(addTripIntent);
 
@@ -216,7 +236,7 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
     }
 
     @Override
-    public void getAllTrips(List<Trip> trips) {
+    public void getUpcomingTrips(List<Trip> trips) {
         // revive in that value coz i need to use it in swip delete
         if (tripsList != null) {
             Log.i(TAG, "Home >> getAllTrips: TripsList !=null ");
@@ -225,10 +245,24 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
         for (Trip t : trips) {
             tripsList.add(t);
         }
+        if (trips.isEmpty()) {
+            recyclerView.setVisibility(View.INVISIBLE);
+            empty_view.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            empty_view.setVisibility(View.INVISIBLE);
+        }
         homeAdapter.setTripsList(tripsList);
         homeAdapter.notifyDataSetChanged();
+
+
         Log.i(TAG, "Home >> setTripsToList: trips.size " + tripsList.size());
         Log.i(TAG, "Home >> setTripsToList: trips.size " + trips.size());
+
+    }
+
+    @Override
+    public void onDeleteTripSuccess(String state) {
 
     }
 
@@ -280,7 +314,7 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
                             // delet frow ui as well fb
                             if (isUndoClickedNotClicked) {
                                 Log.i(TAG, "onDismissed: from isUndoClickedNotClicked");
-                                homePresenter.onDeleteTrip(deletedTrip.getId());
+                                homePresenterDelere.onDeleteTrip(deletedTrip.getId());
                             }
                         }
                     }).show();
@@ -296,7 +330,6 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
                     homeAdapter.notifyItemRemoved(tripIndex);
 
                     // TODO just leave it for now until
-
                     Intent intent = new Intent(Home.this, MainActivity.class);
                     startActivity(intent);
                     Toast.makeText(Home.this, "Start Trip ", Toast.LENGTH_SHORT).show();
@@ -312,6 +345,13 @@ public class Home extends AppCompatActivity implements HomeContract.HomeView {
                               @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
+      //  homePresenter.onGetUpcomingTrips();
     }
 }
 

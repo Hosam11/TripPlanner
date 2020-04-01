@@ -39,6 +39,8 @@
     <string name="nav_sync">Sync</string>
     <string name="log_out">Logout</string>
     <string name="nav_map">Map</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="edit_trip">Edit</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
@@ -49,6 +51,7 @@
         <item>Settings</item>
     </string-array>
     <!--End For NavDrawer-->
+
 
 
     <!--     <string name="app_name">TrioPlanner</string> -->
