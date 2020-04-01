@@ -1,4 +1,4 @@
-package com.example.trioplanner.firebase;
+package com.example.trioplanner.signup;
 
 
 import androidx.annotation.NonNull;
