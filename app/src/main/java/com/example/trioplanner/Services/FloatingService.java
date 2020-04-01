@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
+
 import com.example.trioplanner.R;
 
 public class FloatingService extends Service implements View.OnClickListener {
@@ -16,6 +18,7 @@ public class FloatingService extends Service implements View.OnClickListener {
     private View mFloatingView;
     private View collapsedView;
     private View expandedView;
+    private TextView notes;
     private int initialX;
     private int initialY;
     private float initialTouchX;
@@ -55,6 +58,9 @@ public class FloatingService extends Service implements View.OnClickListener {
         collapsedView = mFloatingView.findViewById(R.id.layoutCollapsed);
         expandedView = mFloatingView.findViewById(R.id.layoutExpanded);
 
+    //todo add notes here ....................
+        notes = expandedView.findViewById(R.id.notes);
+        notes.setText("Notes From code");
         //adding click listener to close button and expanded view
         mFloatingView.findViewById(R.id.buttonClose).setOnClickListener(this);
         expandedView.setOnClickListener(this);
