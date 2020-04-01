@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Button alt = findViewById(R.id.alarm);
         alt.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -40,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
                 //alarmManager.cancel(pi);
             }
-        });
     }
 
-
+                               }
 }
