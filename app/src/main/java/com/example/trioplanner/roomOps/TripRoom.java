@@ -1,5 +1,6 @@
 package com.example.trioplanner.roomOps;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -9,6 +10,7 @@ import java.util.UUID;
 @Entity(tableName = "trips")
 public class TripRoom {
     @PrimaryKey()
+    @NonNull
     private String id; // will add to trip by firebase {getKey}
     private String name;
     private String startLoc;
@@ -117,5 +119,9 @@ public class TripRoom {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getFromOnline() {
+        return fromOnline;
     }
 }
