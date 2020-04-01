@@ -2,13 +2,23 @@ package com.example.trioplanner;
 
 public class comments {
 
-    //TODO handle internet connection or later user offline
-    /* TODO in model firebase make two method 1 return all upcoming trips
-        and anthor to return the rest of trips
-    */
-    // TODO display message when saved success
+
 
 // "-M3hJ0NJTZo_IpcsenSn"
+
+// TODO make save take an if and if is null generate id and save else take that id and save it
+
+
+
+//                Intent addTripIntent =
+    // Intent intentEditViewTrip = new Intent(context, ViewEditTrip.class);
+    //    intent.setClass(context, SinglePersonActivity.class);
+    //   Intent intent = new Intent(className);
+    // profile = (ProfileClass) intent.getSerializableExtra(MyAdapter.PASS_PROFILE_ACTIVITY);
+    //intentEditViewTrip.putExtra(KEY_PASS_TRIP, aTrip);
+    //context.startActivity(intentEditViewTrip);
+
+    // Toast.makeText(context, "name is >> " + aTrip.getName(), Toast.LENGTH_SHORT).show();
 
 /*
     Trip trip = new Trip("data viet",
@@ -20,11 +30,9 @@ public class comments {
             "buy some fruit",
             "upcomming");*/
 
-
     //  homePresenter.onSaveTrip(trip);
     // take the trip that i want to updated
     //  homePresenter.onUpdateTrip(trip.getId(),trip);
-
 
     /*
 
@@ -176,8 +184,6 @@ getSupportActionBar().setDisplayShowTitleEnabled(false);
          *                  {@link #UP} and {@link #DOWN}.
          */
 
-
-
 /*        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             boolean isUndoClicked = false;
@@ -324,5 +330,47 @@ getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
     */
+
+    /*
+     /*
+        offline.keepSynced();
+        offline.queryRecentScores();
+        offline.onDisconnect();
+        offline.getConnectionState();
+        */
+        /*
+        dbReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i(TAG, "FirebaseModelImpl >> getAllTripLisnter >> onDataChange: ");
+                // it's important to clear the list before retrive data so can n't appand to list
+                // and return to view a huge elements
+                tripsReturned.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    tripsReturned.add(snapshot.getValue(Trip.class));
+                    //   Log.i(TAG, "onDataChange: tripName  >> " +snapshot.getValue(Trip.class).getName());
+                }
+
+                Log.i(TAG, "FirebaseModelImpl >> onDataChange:  " +
+                        " listSize >> " + tripsReturned.size());
+
+
+                if (getAllTripLisnter != null) {
+                  //  Log.i(TAG, "onDataChange*getAllTripLisnter != null* ");
+                    getAllTripLisnter.onGetAllTripsComplete(tripsReturned);
+
+                } else if (saveTripListener != null) {
+                    Log.i(TAG, "FirebaseModelImpl >> onDataChange*saveTripListener != null* ");
+                    saveTripListener.onFinishedSaved("Success");
+                }
+                   //  Log.i(TAG, "FirebaseModelImpl >> onDataChange: tripsReturnedSize >>  " + tripsReturned.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+            */
 
 }

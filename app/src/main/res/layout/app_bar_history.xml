@@ -6,13 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+<!--  fixme: for test this not used   -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -20,7 +22,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_home" />
+    <include layout="@layout/activity_histroy_view" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
