@@ -82,7 +82,7 @@ public class AddTrip extends AppCompatActivity implements
         //alarmManager.cancel(pi);
       //  name - startLoc -  endLoc -  date -  time -  type -  notes
         Trip trip = new Trip(tripName, "tripStartPoint", "tripEndPoint", tripDate, tripTime,
-                tripType, tripNotes, tripStatus);
+                tripType, tripNotes, tripStatus,"f");
         addTripPresenter.onSaveTrip(trip);
         finish();
     }

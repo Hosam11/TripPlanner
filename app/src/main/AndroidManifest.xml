@@ -78,12 +78,10 @@
         <activity
             android:name=".AddTrip"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Home"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".signup.SignupActivity" />
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".login.LoginActivity" />
         <activity android:name=".MainActivity">
 
 
