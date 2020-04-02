@@ -95,10 +95,10 @@ public class AddTrip extends AppCompatActivity implements
 
 
         //  name - startLoc -  endLoc -  date -  time -  type -  notes
-        Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
+        Trip trip = new Trip(tripName, "tripStartPoint", "tripEndPoint", tripDate, tripTime,
                 tripType, tripNotes, tripStatus, SAVED_ONLINE);
 
-        if (tripName.isEmpty() || tripStartPoint.isEmpty() || tripDate.isEmpty() ||
+        if (tripName.isEmpty() || tripDate.isEmpty() ||
                 tripTime.isEmpty() || tripNotes.isEmpty() || tripType.isEmpty() ||
                 tripStatus.isEmpty()) {
 
