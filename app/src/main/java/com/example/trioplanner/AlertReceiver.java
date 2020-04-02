@@ -12,7 +12,6 @@ import androidx.core.app.NotificationManagerCompat;
 public class AlertReceiver extends BroadcastReceiver {
     private NotificationManagerCompat nManager;
     Context c;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         this.c=context;
