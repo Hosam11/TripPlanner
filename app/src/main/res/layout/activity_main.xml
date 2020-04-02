@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/autour_one"
-        android:text="TrioPlanner"
+        android:text="TripPlanner"
         android:textAlignment="center"
         android:textColor="#C5AAAA"
         android:textSize="45sp"

@@ -1,7 +1,6 @@
 package com.example.trioplanner.histroy_view;
 
 import android.content.Context;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.example.trioplanner.R;
 import com.example.trioplanner.Uitiles;
 import com.example.trioplanner.data.Trip;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,18 +56,17 @@ public class HistroyAdapter extends RecyclerView.Adapter<HistroyAdapter.HistroyV
         holder.tvTripStartLoc.setText(aTrip.getStartLoc());
         holder.tvTripEndLoc.setText(aTrip.getEndLoc());
 
-        if (aTrip.getStatus().equals(Uitiles.STATUS_DONE)){
+        if (aTrip.getStatus().equals(Uitiles.STATUS_DONE)) {
             holder.ivStatus.setImageResource(R.drawable.ic_check_black_24dp);
         } else {
             holder.ivStatus.setImageResource(R.drawable.ic_close_black_24dp);
         }
 
 
-
         holder.consSingleRow.setOnClickListener(v -> {
 
-            showCustomDialog(forDialoge, aTrip.getNotes());
-       });
+            Uitiles.showCustomDialog(forDialoge, aTrip.getNotes(), context, "Notes");
+        });
     }
 
     @Override
@@ -102,27 +97,6 @@ public class HistroyAdapter extends RecyclerView.Adapter<HistroyAdapter.HistroyV
             consSingleRow = itemView.findViewById(R.id.singleRowHome);
 
         }
-    }
-
-    public void showCustomDialog(View itemView, String notes) {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        ViewGroup viewGroup = itemView.findViewById(android.R.id.content);
-
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(context)
-                .inflate(R.layout.dialoge_layout, viewGroup, false);
-
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-//        setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        TextView tv = dialogView.findViewById(R.id.tvDialogeNotes);
-        tv.setText(notes);
-        alertDialog.show();
     }
 
 

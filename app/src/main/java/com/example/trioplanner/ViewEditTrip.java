@@ -18,8 +18,18 @@ import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.data.Trip;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -30,17 +40,18 @@ import static com.example.trioplanner.Uitiles.SAVED_OFFLINE;
 import static com.example.trioplanner.Uitiles.SAVED_ONLINE;
 import static com.example.trioplanner.Uitiles.TAG;
 
-public class ViewEditTrip extends AppCompatActivity implements
+public class
+ViewEditTrip extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
         HomeContract.EditTripView {
 
     @BindView(R.id.name)
     TextInputEditText name;
-    @BindView(R.id.epoint)
-    TextInputEditText endPoint;
-    @BindView(R.id.spoint)
-    TextInputEditText startPoint;
+//    @BindView(R.id.epoint)
+//    TextInputEditText endPoint;
+//    @BindView(R.id.spoint)
+//    TextInputEditText startPoint;
     @BindView(R.id.date)
     TextInputEditText date;
     @BindView(R.id.time)
@@ -68,8 +79,8 @@ public class ViewEditTrip extends AppCompatActivity implements
     @OnClick(R.id.add)
     void addTrip(View view) {
         String tripName = name.getText().toString();
-        String tripStartPoint = startPoint.getText().toString();
-        String tripEndPoint = endPoint.getText().toString();
+//        String tripStartPoint = startPoint.getText().toString();
+//        String tripEndPoint = endPoint.getText().toString();
         String tripType = String.valueOf(isRoundTrip());
         String tripDate = date.getText().toString();
         String tripTime = time.getText().toString();
@@ -80,8 +91,8 @@ public class ViewEditTrip extends AppCompatActivity implements
         if (isView) {
             btnViewEdit.setText("Submit");
             name.setEnabled(true);
-            startPoint.setEnabled(true);
-            endPoint.setEnabled(true);
+//            startPoint.setEnabled(true);
+//            endPoint.setEnabled(true);
             date.setEnabled(true);
             time.setEnabled(true);
             notes.setEnabled(true);
@@ -90,9 +101,13 @@ public class ViewEditTrip extends AppCompatActivity implements
             btnAddTime.setEnabled(true);
             isView = false;
         } else {
+            // TODO update that code with lat and long later
             //  name - startLoc -  endLoc -  date -  time -  type -  notes
-            Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
+          
+
+            Trip trip = new Trip(tripName, "tripStartPoint", "", tripDate, tripTime,
                     tripType, tripNotes, tripStatus, SAVED_ONLINE);
+        
             trip.setId(tripFormIntent.getId());
 
             // Edit in db
@@ -112,8 +127,8 @@ public class ViewEditTrip extends AppCompatActivity implements
             btnViewEdit.setText("Edit");
             isView = true;
             name.setEnabled(false);
-            startPoint.setEnabled(false);
-            endPoint.setEnabled(false);
+//            startPoint.setEnabled(false);
+//            endPoint.setEnabled(false);
             date.setEnabled(false);
             time.setEnabled(false);
             notes.setEnabled(false);
@@ -160,14 +175,57 @@ public class ViewEditTrip extends AppCompatActivity implements
         Intent intent = getIntent();
         tripFormIntent = (Trip) intent.getSerializableExtra(Uitiles.KEY_PASS_TRIP);
         name.setText(tripFormIntent.getName());
-        startPoint.setText(tripFormIntent.getStartLoc());
-        endPoint.setText(tripFormIntent.getEndLoc());
+//        startPoint.setText(tripFormIntent.getStartLoc());
+//        endPoint.setText(tripFormIntent.getEndLoc());
         date.setText(tripFormIntent.getDate());
         time.setText(tripFormIntent.getTime());
         notes.setText(tripFormIntent.getNotes());
         round.setChecked(Boolean.parseBoolean(tripFormIntent.getType()));
 
         editTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
+        Places.initialize(getApplicationContext(), "AIzaSyDuifm35ZNF7OOG7exwhOrda3mb1H8qFnA");
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment1 = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.spoint1);
+
+        AutocompleteSupportFragment autocompleteFragment2 = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.epoint1);
+        // Set up a PlaceSelectionListener to handle the response.
+        // Specify the types of place data to return.
+        autocompleteFragment1.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteFragment2.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteFragment1.setCountry("EG");
+        autocompleteFragment2.setCountry("EG");
+        autocompleteFragment1.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Hossam Get info about the selected place.
+                Toast.makeText(getApplicationContext()," "+place.getLatLng(),Toast.LENGTH_SHORT).show();
+                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG", "An error occurred: " + status);
+            }
+        });
+
+        autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Hossam Get info about the selected place.
+                Toast.makeText(getApplicationContext()," "+place.getName(),Toast.LENGTH_SHORT).show();
+                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG", "An error occurred: " + status);
+            }
+        });
+
 
     }
 
