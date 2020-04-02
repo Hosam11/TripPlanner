@@ -1,5 +1,8 @@
 package com.example.trioplanner.HomeView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -11,7 +14,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -19,20 +21,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trioplanner.AddTrip;
+import com.example.trioplanner.AlertReceiver;
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
-import com.example.trioplanner.MainActivity;
 import com.example.trioplanner.R;
 import com.example.trioplanner.StartTripActivity;
 import com.example.trioplanner.Uitiles;
+import com.example.trioplanner.ViewEditTrip;
 import com.example.trioplanner.data.Trip;
 import com.example.trioplanner.histroy_view.HistroyView;
 import com.example.trioplanner.login.LoginActivity;
@@ -49,7 +51,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static com.example.trioplanner.Uitiles.KEY_PASS_TRIP;
@@ -57,7 +58,8 @@ import static com.example.trioplanner.Uitiles.TAG;
 
 public class Home extends AppCompatActivity implements
         HomeContract.HomeView,
-        HomeContract.DeleteTrip{
+        HomeContract.DeleteTrip,
+        HomeContract.EditTripView {
 
     //private static final String TAG = "hproj";
     // recycleView
@@ -84,12 +86,12 @@ public class Home extends AppCompatActivity implements
     HomeContract.HomePresenter editTripPresenter;
 
     ProgressBar progressBar;
+    ImageView ivNavHeader;
     // nav drawer
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView navigationView;
     private View navHeader;
-    ImageView ivNavHeader;
     private GoogleSignInClient mGoogleSignInClient;
     // toolBarAction
     private Toolbar mToolbar;
@@ -144,15 +146,15 @@ public class Home extends AppCompatActivity implements
             switch (id) {
                 case R.id.nav_upcoming:
                     Log.i(TAG, "onCreate:  Upc ");
-                    Toast.makeText(Home.this, "Upc", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(Home.this, "Upc", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_History:
                     Intent historyIntent = new Intent(this, HistroyView.class);
                     startActivity(historyIntent);
-                   // Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(Home.this, "Settings", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_sync:
-                    Toast.makeText(Home.this, "Sync", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(Home.this, "Sync", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_log_out:
                     // TODO log-out btn
@@ -170,21 +172,21 @@ public class Home extends AppCompatActivity implements
                                     finish();
                                 }
                             });
-                    Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_map:
-                    Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     return true;
             }
             return true;
         });
-        tvNavName.setText("ali");
-        tvNavEmail.setText("hello@example.com");
 
+//        tvNavName.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        tvNavEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        Log.i(TAG, " Home >> onCreate:+  >> " + FirebaseAuth.getInstance().getCurrentUser().getEmail());
         // #>> End Navigation Drawer
-
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -210,7 +212,7 @@ public class Home extends AppCompatActivity implements
                 R.drawable.vertical_divider);
         verticalDecoration.setDrawable(verticalDivider);
 
-       // recyclerView.addItemDecoration(verticalDecoration);
+        // recyclerView.addItemDecoration(verticalDecoration);
 
         homeAdapter = new HomeAdapter(this);
 
@@ -229,8 +231,13 @@ public class Home extends AppCompatActivity implements
                 (HomeContract.HomeView) this);
         homePresenterDelere = new HomePresenterImpl(new FirebaseModelImpl(),
                 (HomeContract.DeleteTrip) this);
+
+        editTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(),
+                (HomeContract.EditTripView) this);
+
+
         // TODO add contion chech connectivity
-        if (Uitiles.checkInternetState(this)){
+        if (Uitiles.checkInternetState(this)) {
             homePresenter.onGetUpcomingTrips();
         } else {
             // TODO 3- salag get from room db
@@ -279,6 +286,7 @@ public class Home extends AppCompatActivity implements
         for (Trip t : trips) {
             tripsList.add(t);
         }
+
         if (trips.isEmpty()) {
             recyclerView.setVisibility(View.INVISIBLE);
             empty_view.setVisibility(View.VISIBLE);
@@ -288,7 +296,6 @@ public class Home extends AppCompatActivity implements
         }
         homeAdapter.setTripsList(tripsList);
         homeAdapter.notifyDataSetChanged();
-
 
         Log.i(TAG, "Home >> setTripsToList: trips.size " + tripsList.size());
         Log.i(TAG, "Home >> setTripsToList: trips.size " + trips.size());
@@ -300,6 +307,24 @@ public class Home extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onUpdateTripSuccrss(String state) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
+        //  homePresenter.onGetUpcomingTrips();
+    }
+
+    @Override
+    public void onBackPressed() {
+//        finish();
+        super.onBackPressed();
+        //Toast.makeText(this, "backPress()", Toast.LENGTH_SHORT).show();
+    }
 
     class ItemTouchHelp extends ItemTouchHelper.SimpleCallback {
 
@@ -349,6 +374,10 @@ public class Home extends AppCompatActivity implements
                             if (isUndoClickedNotClicked) {
                                 Log.i(TAG, "onDismissed: from isUndoClickedNotClicked");
                                 homePresenterDelere.onDeleteTrip(deletedTrip.getId());
+                                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                Intent intent = new Intent(Home.this, AlertReceiver.class);
+                                PendingIntent pi = PendingIntent.getBroadcast(Home.this, 1, intent, 0);
+                                alarmManager.cancel(pi);
                                 // TODO >> {deletedTrip} aTrip
                             }
                         }
@@ -356,26 +385,26 @@ public class Home extends AppCompatActivity implements
 
                     break;
                 case ItemTouchHelper.RIGHT:
-                        /*
-                            hold id of it then
-                            trip delete from list
-                            update it's status by id when click wheather start or canceled
-                         */
-
-
+                    /*
+                        hold id of it then
+                        trip delete from list
+                        update it's status by id when click wheather start or canceled
+                     */
+                    Trip mTrip = tripsList.get(tripIndex);
                     // send trip to start activity to extract data from it
-                    Intent startIntent = new Intent(Home.this, StartTripActivity.class);
-
-                    startIntent.putExtra(KEY_PASS_TRIP, tripsList.get(tripIndex));
+                    Intent startIntent = new Intent(Home.this,
+                            StartTripActivity.class);
+                    startIntent.putExtra(KEY_PASS_TRIP, mTrip);
+                  /*  mTrip.setStatus(Uitiles.STATUS_DONE);
+                    editTripPresenter.onUpdateTrip(mTrip.getId(), mTrip);*/
+                    startIntent.putExtra(KEY_PASS_TRIP, mTrip);
                     startActivity(startIntent);
-                    Toast.makeText(Home.this, "Start Trip ", Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(Home.this, "Start Trip ", Toast.LENGTH_SHORT).show();
                     Log.i(TAG, "onSwiped: start pos " + tripIndex);
                     tripsList.remove(tripIndex);
                     homeAdapter.notifyItemRemoved(tripIndex);
                     break;
             }
-
-
         }
 
         @Override
@@ -383,20 +412,6 @@ public class Home extends AppCompatActivity implements
                               @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy: ");
-      //  homePresenter.onGetUpcomingTrips();
-    }
-
-    @Override
-    public void onBackPressed() {
-//        finish();
-        super.onBackPressed();
-        //Toast.makeText(this, "backPress()", Toast.LENGTH_SHORT).show();
     }
 }
 

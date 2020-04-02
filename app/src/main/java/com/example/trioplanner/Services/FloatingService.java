@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.trioplanner.R;
+import com.example.trioplanner.Uitiles;
+import com.example.trioplanner.data.Trip;
 
 public class FloatingService extends Service implements View.OnClickListener {
 
@@ -27,24 +30,37 @@ public class FloatingService extends Service implements View.OnClickListener {
     public FloatingService() {
     }
 
+    Intent fromService ;
+    Trip mTrip;
+
     @Override
     public IBinder onBind(Intent intent) {
+      //  fromService = intent;
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        fromService = intent;
+        mTrip = (Trip) fromService.getSerializableExtra(Uitiles.KEY_PASS_TRIP);
+        notes.setText(mTrip.getNotes());
+        return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-
         //getting the widget layout from xml using layout inflater
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating_icon, null);
 
+
+        Log.i("m", "onCreate: ");
         //setting the layout parameters
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
@@ -58,16 +74,17 @@ public class FloatingService extends Service implements View.OnClickListener {
         collapsedView = mFloatingView.findViewById(R.id.layoutCollapsed);
         expandedView = mFloatingView.findViewById(R.id.layoutExpanded);
 
-    //todo add notes here ....................
+        //todo add notes here ....................
         notes = expandedView.findViewById(R.id.notes);
-        notes.setText("Notes From code");
+    //    notes.setText("");
+//        notes.setText(mTrip.getNotes());
         //adding click listener to close button and expanded view
         mFloatingView.findViewById(R.id.buttonClose).setOnClickListener(this);
         expandedView.setOnClickListener(this);
 
         //adding an touchlistener to make drag movement of the floating widget
-        mFloatingView.findViewById(R.id.relativeLayoutParent).setOnTouchListener(new View.OnTouchListener() {
-
+        mFloatingView.findViewById(R.id.relativeLayoutParent)
+                .setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -78,7 +95,6 @@ public class FloatingService extends Service implements View.OnClickListener {
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
                         return true;
-
                     case MotionEvent.ACTION_UP:
                         //when the drag is ended switching the state of the widget
                         collapsedView.setVisibility(View.GONE);
@@ -111,7 +127,6 @@ public class FloatingService extends Service implements View.OnClickListener {
                 collapsedView.setVisibility(View.VISIBLE);
                 expandedView.setVisibility(View.GONE);
                 break;
-
             case R.id.buttonClose:
                 //closing the widget
                 stopSelf();

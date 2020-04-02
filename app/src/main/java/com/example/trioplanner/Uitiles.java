@@ -1,6 +1,8 @@
 package com.example.trioplanner;
 
+import android.app.AlarmManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.LayoutInflater;
@@ -33,8 +35,10 @@ public class Uitiles {
         } else {
             return false;
         }
-    }
 
+
+
+    }
 
     public  static void showCustomDialog(View itemView, String notes, Context context, String dialogeHead) {
         //before inflating the custom alert dialog layout,
@@ -48,14 +52,14 @@ public class Uitiles {
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-//        setting the view of the builder to our custom view that we already inflated
+        //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
         TextView tv = dialogView.findViewById(R.id.tvDialogeNotes);
         tv.setText(notes);
-        TextView tvHead = dialogView.findViewById(R.id.tvDialogeNotes);
+        TextView tvHead = dialogView.findViewById(R.id.dialogeHead);
         tvHead.setText(dialogeHead);
         alertDialog.show();
     }

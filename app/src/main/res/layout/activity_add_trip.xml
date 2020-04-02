@@ -48,7 +48,6 @@
                 android:ems="10"
                 android:hint="@string/triptitle"
                 android:inputType="textPersonName"
-                android:text="nn"
                 android:textColorHint="#FFFFFF" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -215,8 +214,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textMultiLine"
-                android:text="@string/date" />
+                android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatCheckBox
