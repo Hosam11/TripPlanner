@@ -1,7 +1,10 @@
 package com.example.trioplanner;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
+import com.example.trioplanner.HomeView.Home;
 import com.example.trioplanner.data.Trip;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -45,7 +49,7 @@ ViewEditTrip extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
         HomeContract.EditTripView {
-
+    Calendar calendar = Calendar.getInstance();
     @BindView(R.id.name)
     TextInputEditText name;
 //    @BindView(R.id.epoint)
@@ -183,6 +187,12 @@ ViewEditTrip extends AppCompatActivity implements
         round.setChecked(Boolean.parseBoolean(tripFormIntent.getType()));
 
         editTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent i = new Intent(this, AlertReceiver.class);
+        PendingIntent pi =  PendingIntent.getBroadcast(this,1,intent,0);
+        alarmManager.cancel(pi);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pi);
+
         Places.initialize(getApplicationContext(), "AIzaSyDuifm35ZNF7OOG7exwhOrda3mb1H8qFnA");
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment1 = (AutocompleteSupportFragment)
@@ -232,13 +242,15 @@ ViewEditTrip extends AppCompatActivity implements
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.i("TAG", "onTimeSet: ");
+        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        calendar.set(Calendar.MINUTE,minute);
         time.setText(hourOfDay + ":" + minute);
 
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar calendar = Calendar.getInstance();
+
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

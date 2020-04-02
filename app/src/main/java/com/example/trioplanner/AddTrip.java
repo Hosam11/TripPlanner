@@ -68,6 +68,9 @@ public class AddTrip extends AppCompatActivity implements
     @BindView(R.id.roundTrip)
     CheckBox round;
 
+
+    @OnClick(R.id.add) void addTrip(View view){
+
     View view;
 
 
@@ -76,11 +79,6 @@ public class AddTrip extends AppCompatActivity implements
 
     private LatLng startPointLoc;
     private LatLng endPointLoc;
-
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @OnClick(R.id.add)
-    void addTrip(View view) {
         String tripName = name.getText().toString();
         // String tripStartPoint = startPoint.getText().toString();
 //        String tripEndPoint = endPoint.getText().toString();
@@ -89,6 +87,13 @@ public class AddTrip extends AppCompatActivity implements
         String tripNotes = notes.getText().toString();
         String tripType = String.valueOf(isRoundTrip());
         String tripStatus = Uitiles.STATUS_UPCOMING;
+
+        //alarm manager
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(AddTrip.this,AlertReceiver.class);
+        PendingIntent pi =  PendingIntent.getBroadcast(AddTrip.this,1,intent,0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
+        //alarmManager.cancel(pi);
 
         String latLagLoc1 = startPointLoc.latitude + "_" + startPointLoc.longitude;
         String latLagLoc2 = endPointLoc.latitude + "_" + endPointLoc.longitude;
@@ -222,9 +227,9 @@ public class AddTrip extends AppCompatActivity implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.i("TAG", "onTimeSet: ");
         time.setText(hourOfDay + ":" + minute);
-
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
+
     }
 
     @Override
