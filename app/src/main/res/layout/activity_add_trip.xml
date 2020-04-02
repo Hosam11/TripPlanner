@@ -51,56 +51,49 @@
                 android:textColorHint="#FFFFFF" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <androidx.cardview.widget.CardView
             android:id="@+id/startPoint"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
+
             android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tripName"
-            app:startIconDrawable="@drawable/ic_location"
-            app:endIconMode="clear_text"
-            app:counterEnabled="true"
-            app:counterMaxLength="20"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <fragment
                 android:id="@+id/spoint"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/startpoint"
-                android:inputType="textPersonName"
-                android:text="ss" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/endPoint"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
-            app:startIconDrawable="@drawable/ic_location"
-            app:endIconMode="clear_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/startPoint"
             app:counterEnabled="true"
-            app:counterMaxLength="20">
+            app:counterMaxLength="20"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            app:startIconDrawable="@drawable/ic_location">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <fragment
                 android:id="@+id/epoint"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/endpoint"
-                android:inputType="textPersonName"
-                android:text="dd" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content" />
+        </androidx.cardview.widget.CardView>>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tripdate"
@@ -232,6 +225,26 @@
             android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/roundTrip" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="From"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tripName" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="8dp"
+            android:text="To"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startPoint" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
