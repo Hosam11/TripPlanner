@@ -31,7 +31,10 @@ import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.MainActivity;
 import com.example.trioplanner.R;
+import com.example.trioplanner.TripsMapActivity;
+
 import com.example.trioplanner.StartTripActivity;
+
 import com.example.trioplanner.Uitiles;
 import com.example.trioplanner.data.Trip;
 import com.example.trioplanner.histroy_view.HistroyView;
@@ -46,6 +49,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -173,7 +177,11 @@ public class Home extends AppCompatActivity implements
                     Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_map:
-                    Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Home.this, TripsMapActivity.class);
+                    Bundle args = new Bundle();
+                    args.putSerializable("ARRAYLIST",(Serializable) tripsList);
+                    intent.putExtra("BUNDLE",args);
+                    startActivity(intent);
                     break;
                 default:
                     return true;
