@@ -30,7 +30,8 @@ import static com.example.trioplanner.Uitiles.SAVED_OFFLINE;
 import static com.example.trioplanner.Uitiles.SAVED_ONLINE;
 import static com.example.trioplanner.Uitiles.TAG;
 
-public class ViewEditTrip extends AppCompatActivity implements
+public class
+ViewEditTrip extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
         HomeContract.EditTripView {

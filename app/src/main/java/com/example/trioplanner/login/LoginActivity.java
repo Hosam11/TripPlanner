@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements ILogin.IView {
         if(SaveSharedPreference.getLoggedStatus(getApplicationContext())) {
             Intent intent = new Intent(getApplicationContext(), Home.class);
             startActivity(intent);
+            finish();
 
         } else {
             scrollView.setVisibility(View.VISIBLE);

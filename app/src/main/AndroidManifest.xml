@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Test"></activity>
+        <activity android:name=".Test"> </activity>
         <activity
             android:name=".histroy_view.HistroyView"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -52,15 +52,16 @@
             android:name=".AddTrip"
             android:screenOrientation="portrait" />
         <activity android:name=".signup.SignupActivity"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
-
-
+        <activity android:name=".login.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity">
+
         </activity>
 
 
