@@ -52,4 +52,11 @@
     </string-array>
     <!--End For NavDrawer-->
 
+
+
+    <!--     <string name="app_name">TrioPlanner</string> -->
+
+
+    <string name="remember_me">Remember Me</string>
+    <string name="title_activity_trips_map">Map</string>
 </resources>

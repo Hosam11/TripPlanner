@@ -1,6 +1,11 @@
 package com.example.trioplanner;
 
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
+
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
@@ -16,24 +21,39 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.data.Trip;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+
 import static com.example.trioplanner.Uitiles.SAVED_OFFLINE;
 import static com.example.trioplanner.Uitiles.SAVED_ONLINE;
 import static com.example.trioplanner.Uitiles.checkInternetState;
+
 
 
 public class AddTrip extends AppCompatActivity implements
@@ -42,21 +62,14 @@ public class AddTrip extends AppCompatActivity implements
         HomeContract.AddTripView {
 
     Calendar c = Calendar.getInstance();
-
     HomeContract.HomePresenter addTripPresenter;
-
-//    @BindView(R.id.cons)
-
-//    @BindView(R.id.cons)
 
     @BindView(R.id.consAddTrip)
     View consViewGroup;
     @BindView(R.id.name)
     TextInputEditText name;
-    @BindView(R.id.epoint)
-    TextInputEditText endPoint;
-    @BindView(R.id.spoint)
-    TextInputEditText startPoint;
+//    @BindView(R.id.epoint)
+//    TextInputEditText endPoint;
     @BindView(R.id.date)
     TextInputEditText date;
     @BindView(R.id.time)
@@ -72,8 +85,8 @@ public class AddTrip extends AppCompatActivity implements
     @OnClick(R.id.add)
     void addTrip(View view) {
         String tripName = name.getText().toString();
-        String tripStartPoint = startPoint.getText().toString();
-        String tripEndPoint = endPoint.getText().toString();
+       // String tripStartPoint = startPoint.getText().toString();
+//        String tripEndPoint = endPoint.getText().toString();
         String tripDate = date.getText().toString();
         String tripTime = time.getText().toString();
         String tripNotes = notes.getText().toString();
@@ -112,6 +125,7 @@ public class AddTrip extends AppCompatActivity implements
         }
 
 
+
     }
 
 
@@ -148,7 +162,49 @@ public class AddTrip extends AppCompatActivity implements
 
 
         addTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
+        // Initialize the SDK
+        Places.initialize(getApplicationContext(), "AIzaSyDuifm35ZNF7OOG7exwhOrda3mb1H8qFnA");
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment1 = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.spoint);
 
+        AutocompleteSupportFragment autocompleteFragment2 = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.epoint);
+        // Set up a PlaceSelectionListener to handle the response.
+        // Specify the types of place data to return.
+        autocompleteFragment1.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteFragment2.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteFragment1.setCountry("EG");
+        autocompleteFragment2.setCountry("EG");
+        autocompleteFragment1.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Hossam Get info about the selected place.
+                Toast.makeText(getApplicationContext()," "+place.getLatLng(),Toast.LENGTH_SHORT).show();
+                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG", "An error occurred: " + status);
+            }
+        });
+
+        autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Hossam Get info about the selected place.
+                Toast.makeText(getApplicationContext()," "+place.getName(),Toast.LENGTH_SHORT).show();
+                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG", "An error occurred: " + status);
+            }
+        });
 
 
     }
@@ -158,9 +214,9 @@ public class AddTrip extends AppCompatActivity implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.i("TAG", "onTimeSet: ");
         time.setText(hourOfDay + ":" + minute);
-        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        c.set(Calendar.MINUTE, minute);
 
+        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        c.set(Calendar.MINUTE,minute);
     }
 
     @Override
@@ -171,16 +227,18 @@ public class AddTrip extends AppCompatActivity implements
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         date.setText(dayOfMonth + "/" + month + "/" + year);
 
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        c.set(Calendar.YEAR,year);
+        c.set(Calendar.MONTH,month);
+        c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
 
     }
 
 
     @Override
     public void onTripSaveSuccess(String state) {
+
         // Toast.makeText(this, "Trip Added Successfully", Toast.LENGTH_SHORT).show();
+
     }
 
 
