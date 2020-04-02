@@ -27,12 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-       // Button alt = findViewById(R.id.alarm);
-       /* alt.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-
         MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.tone);
         mediaPlayer.start();
         final Handler handler = new Handler();
@@ -45,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
 
-    });*/
-
-      //  }, 9000);
 
 
+        }, 9000);
 
 
 
-}
+
 
 }
+}
+
