@@ -17,11 +17,14 @@ public class Trip implements Serializable {
     // upcoimg - cancell - done
     private String status;
     // t or f
-    private String isSavedOnline; //
+    private String isSavedOnline; // t of online - f for saved offline
+/*
+    private LatLng startPointLoc;
+    private LatLng endPointLoc;
+*/
 
-    //  name - startLoc -  endLoc -  date -  time -  type -  notes
-    // canceld - finished - or waiting
-
+    private String LatLngString1; // data like lat_log firstLocation
+    private String LatLngString2; // data like lat_log
 
     public Trip() {
     }
@@ -39,6 +42,60 @@ public class Trip implements Serializable {
         this.isSavedOnline = isSavedOnline;
 
     }
+
+    public void setLatLngString1(String latLngString1) {
+        LatLngString1 = latLngString1;
+    }
+
+    public void setLatLngString2(String latLngString2) {
+        LatLngString2 = latLngString2;
+    }
+
+    public String getLatLngString1() {
+        return LatLngString1;
+    }
+
+   /* public Trip(String name, String startLoc,
+                String endLoc, String date,
+                String time, String type,
+                String notes, String status,
+                String isSavedOnline,
+                LatLng startPointLoc, LatLng endPointLoc) {
+        this.name = name;
+        this.startLoc = startLoc;
+        this.endLoc = endLoc;
+        this.date = date;
+        this.time = time;
+        this.type = type;
+        this.notes = notes;
+        this.status = status;
+        this.isSavedOnline = isSavedOnline;
+        this.startPointLoc = startPointLoc;
+        this.endPointLoc = endPointLoc;
+    }*/
+
+    public String getLatLngString2() {
+        return LatLngString2;
+    }
+
+ /*   public LatLng getStartPointLoc() {
+        return startPointLoc;
+    }
+
+
+    public void setStartPointLoc(LatLng startPointLoc) {
+        this.startPointLoc = startPointLoc;
+    }
+    //  name - startLoc -  endLoc -  date -  time -  type -  notes
+    // canceld - finished - or waiting
+
+    public LatLng getEndPointLoc() {
+        return endPointLoc;
+    }
+
+    public void setEndPointLoc(LatLng endPointLoc) {
+        this.endPointLoc = endPointLoc;
+    }*/
 
     public String getIsSavedOnline() {
         return isSavedOnline;

@@ -1,8 +1,5 @@
 package com.example.trioplanner;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,15 +9,27 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.trioplanner.Services.FloatingService;
+import com.example.trioplanner.data.Trip;
+
+import static com.example.trioplanner.Uitiles.TAG;
+
 
 public class StartTripActivity extends AppCompatActivity {
+    Trip  mTrip ;
+
     private static final int SYSTEM_ALERT_WINDOW_PERMISSION = 2084;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         //todo get lat and long from intent
+        Intent intent = getIntent();
+        mTrip = (Trip) intent.getSerializableExtra(Uitiles.KEY_PASS_TRIP);
+
         setContentView(R.layout.activity_start_trip);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Open Google Maps ?")
@@ -29,8 +38,12 @@ public class StartTripActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //todo : add lat and long of notification
-                        String latitude = String.valueOf(30.044281); //the lat of destination
-                        String longitude = String.valueOf(31.340002); //long of destination
+                       // String latitude = String.valueOf(30.044281); //the lat of destination
+                        //String longitude = String.valueOf(31.340002); //long of destination
+
+                        String latitude = mTrip.getLatLngString2().split("_")[0]; //the lat of destination
+                        String longitude = mTrip.getLatLngString2().split("_")[1]; //long of destination
+                        Log.i(TAG, "StartTripActivity >> onClick: lat >> " + latitude + " -- log >> " + longitude);
                         Uri intentUri = Uri.parse("google.navigation:q="+latitude+","+longitude);
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW,intentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
