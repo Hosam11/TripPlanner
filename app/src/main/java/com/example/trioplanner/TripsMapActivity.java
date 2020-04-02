@@ -65,6 +65,7 @@ public class TripsMapActivity extends FragmentActivity implements OnMapReadyCall
                     color = Color.MAGENTA;
                     break;
             }
+
             LatLng start = new LatLng(Long.parseLong(Location.convert(trips.get(i).getStart().getLatitude(), Location.FORMAT_DEGREES))
                     , Long.parseLong(Location.convert(trips.get(i).getStart().getLongitude(), Location.FORMAT_DEGREES)));
             LatLng end = new LatLng(Long.parseLong(Location.convert(trips.get(i).getStart().getLatitude(), Location.FORMAT_DEGREES))
