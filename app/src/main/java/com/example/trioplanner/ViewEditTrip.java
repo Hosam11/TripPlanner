@@ -107,11 +107,11 @@ ViewEditTrip extends AppCompatActivity implements
         } else {
             // TODO update that code with lat and long later
             //  name - startLoc -  endLoc -  date -  time -  type -  notes
-          
+
 
             Trip trip = new Trip(tripName, "tripStartPoint", "", tripDate, tripTime,
                     tripType, tripNotes, tripStatus, SAVED_ONLINE);
-        
+
             trip.setId(tripFormIntent.getId());
 
             // Edit in db
