@@ -9,7 +9,6 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
@@ -78,12 +77,9 @@
         <activity
             android:name=".AddTrip"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Home"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".signup.SignupActivity" />
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".login.LoginActivity" />
         <activity android:name=".MainActivity">
 
 
