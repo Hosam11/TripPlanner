@@ -1,8 +1,10 @@
 package com.example.trioplanner;
 
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -18,6 +20,11 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
@@ -43,6 +50,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
+import static com.example.trioplanner.Uitiles.SAVED_OFFLINE;
+import static com.example.trioplanner.Uitiles.SAVED_ONLINE;
+import static com.example.trioplanner.Uitiles.checkInternetState;
+
+
+
 public class AddTrip extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener,
@@ -51,6 +64,8 @@ public class AddTrip extends AppCompatActivity implements
     Calendar c = Calendar.getInstance();
     HomeContract.HomePresenter addTripPresenter;
 
+    @BindView(R.id.consAddTrip)
+    View consViewGroup;
     @BindView(R.id.name)
     TextInputEditText name;
 //    @BindView(R.id.epoint)
@@ -64,27 +79,53 @@ public class AddTrip extends AppCompatActivity implements
     @BindView(R.id.roundTrip)
     CheckBox round;
 
-   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @OnClick(R.id.add) void addTrip(View view){
+    View view;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @OnClick(R.id.add)
+    void addTrip(View view) {
         String tripName = name.getText().toString();
        // String tripStartPoint = startPoint.getText().toString();
 //        String tripEndPoint = endPoint.getText().toString();
         String tripDate = date.getText().toString();
         String tripTime = time.getText().toString();
         String tripNotes = notes.getText().toString();
-        String tripType  = String.valueOf(isRoundTrip());
-        String tripStatus = "Upcoming";
-        //alarm manager
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(AddTrip.this,AlertReceiver.class);
-        PendingIntent pi =  PendingIntent.getBroadcast(AddTrip.this,1,intent,0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
-        //alarmManager.cancel(pi);
-      //  name - startLoc -  endLoc -  date -  time -  type -  notes
-        Trip trip = new Trip(tripName, "tripStartPoint", "tripEndPoint", tripDate, tripTime,
-                tripType, tripNotes, tripStatus,"f");
-        addTripPresenter.onSaveTrip(trip);
-        finish();
+        String tripType = String.valueOf(isRoundTrip());
+        String tripStatus = Uitiles.STATUS_UPCOMING;
+
+
+        //  name - startLoc -  endLoc -  date -  time -  type -  notes
+        Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
+                tripType, tripNotes, tripStatus, SAVED_ONLINE);
+
+        if (tripName.isEmpty() || tripStartPoint.isEmpty() || tripDate.isEmpty() ||
+                tripTime.isEmpty() || tripNotes.isEmpty() || tripType.isEmpty() ||
+                tripStatus.isEmpty()) {
+
+            Uitiles.showCustomDialog(consViewGroup, "Please fill all fields",this);
+
+        } else {
+
+            //alarm manager
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(AddTrip.this, AlertReceiver.class);
+            PendingIntent pi = PendingIntent.getBroadcast(AddTrip.this, 1, intent, 0);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+            //alarmManager.cancel(pi);
+            if (checkInternetState(this)) {
+
+                trip.setIsSavedOnline(SAVED_ONLINE);
+                addTripPresenter.onSaveTrip(trip);
+            } else {
+                trip.setIsSavedOnline(SAVED_OFFLINE);
+                // TODO 1- Salah add to room DB
+            }
+
+            finish();
+        }
+
+
+
     }
 
 
@@ -119,6 +160,7 @@ public class AddTrip extends AppCompatActivity implements
         setContentView(R.layout.activity_add_trip);
         ButterKnife.bind(this);
 
+
         addTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
         // Initialize the SDK
         Places.initialize(getApplicationContext(), "AIzaSyDuifm35ZNF7OOG7exwhOrda3mb1H8qFnA");
@@ -128,7 +170,7 @@ public class AddTrip extends AppCompatActivity implements
 
         AutocompleteSupportFragment autocompleteFragment2 = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.epoint);
-// Set up a PlaceSelectionListener to handle the response.
+        // Set up a PlaceSelectionListener to handle the response.
         // Specify the types of place data to return.
         autocompleteFragment1.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
         autocompleteFragment2.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));
@@ -164,6 +206,7 @@ public class AddTrip extends AppCompatActivity implements
             }
         });
 
+
     }
 
 
@@ -171,6 +214,7 @@ public class AddTrip extends AppCompatActivity implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.i("TAG", "onTimeSet: ");
         time.setText(hourOfDay + ":" + minute);
+
         c.set(Calendar.HOUR_OF_DAY,hourOfDay);
         c.set(Calendar.MINUTE,minute);
     }
@@ -182,15 +226,20 @@ public class AddTrip extends AppCompatActivity implements
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         date.setText(dayOfMonth + "/" + month + "/" + year);
+
         c.set(Calendar.YEAR,year);
         c.set(Calendar.MONTH,month);
         c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+
     }
 
 
     @Override
     public void onTripSaveSuccess(String state) {
 
+        // Toast.makeText(this, "Trip Added Successfully", Toast.LENGTH_SHORT).show();
+
     }
+
 
 }

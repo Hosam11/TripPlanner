@@ -70,7 +70,7 @@ public class HistroyAdapter extends RecyclerView.Adapter<HistroyAdapter.HistroyV
 
         holder.consSingleRow.setOnClickListener(v -> {
 
-            showCustomDialog(forDialoge, aTrip.getNotes());
+            Uitiles.showCustomDialog(forDialoge, aTrip.getNotes(), context);
        });
     }
 
@@ -104,26 +104,7 @@ public class HistroyAdapter extends RecyclerView.Adapter<HistroyAdapter.HistroyV
         }
     }
 
-    public void showCustomDialog(View itemView, String notes) {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        ViewGroup viewGroup = itemView.findViewById(android.R.id.content);
 
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(context)
-                .inflate(R.layout.dialoge_layout, viewGroup, false);
-
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-//        setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        TextView tv = dialogView.findViewById(R.id.tvDialogeNotes);
-        tv.setText(notes);
-        alertDialog.show();
-    }
 
 
 }

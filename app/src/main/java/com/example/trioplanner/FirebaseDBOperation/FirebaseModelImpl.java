@@ -85,12 +85,18 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
        // Log.i(TAG, "FirebaseModelImpl >> saveTripToFB: ");
 
         if (trip.getId() == null) {
-            Log.i(TAG, "FirebaseModelImpl >> saveTripToFB: >> id >> is null" );
             id = dbReference.push().getKey();
+            // coz a trip comming wihtout id attribute
+            trip.setId(id);
+            Log.i(TAG, "FirebaseModelImpl >> saveTripToFB: >> id >> is null" +
+                    " >> " + id);
         } else {
-            Log.i(TAG, "FirebaseModelImpl >> saveTripToFB: >> id  not null" );
-
             id = trip.getId();
+            // coz a trip comming wihtout id attribute
+
+            trip.setId(id);
+            Log.i(TAG, "FirebaseModelImpl >> saveTripToFB: >> id  not null" +
+                    ""  + id );
         }
 //        trip.set
         Task saveTask = dbReference.child(id).setValue(trip);

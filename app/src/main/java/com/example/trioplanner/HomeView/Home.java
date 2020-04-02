@@ -315,6 +315,7 @@ public class Home extends AppCompatActivity implements
                             if (isUndoClickedNotClicked) {
                                 Log.i(TAG, "onDismissed: from isUndoClickedNotClicked");
                                 homePresenterDelere.onDeleteTrip(deletedTrip.getId());
+                                // TODO >> {deletedTrip} aTrip
                             }
                         }
                     }).show();
@@ -352,6 +353,13 @@ public class Home extends AppCompatActivity implements
         super.onDestroy();
         Log.i(TAG, "onDestroy: ");
       //  homePresenter.onGetUpcomingTrips();
+    }
+
+    @Override
+    public void onBackPressed() {
+//        finish();
+        super.onBackPressed();
+        //Toast.makeText(this, "backPress()", Toast.LENGTH_SHORT).show();
     }
 }
 
