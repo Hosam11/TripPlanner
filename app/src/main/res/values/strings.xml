@@ -51,5 +51,6 @@
     <string name="email">Email</string>
     <string name="go">Go</string>
     <string name="remember_me">Remember Me</string>
+    <string name="title_activity_trips_map">Map</string>
 
 </resources>
