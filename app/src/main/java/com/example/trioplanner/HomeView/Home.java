@@ -31,6 +31,7 @@ import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.MainActivity;
 import com.example.trioplanner.R;
+import com.example.trioplanner.StartTripActivity;
 import com.example.trioplanner.Uitiles;
 import com.example.trioplanner.data.Trip;
 import com.example.trioplanner.histroy_view.HistroyView;
@@ -42,6 +43,8 @@ import java.util.List;
 
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+import static com.example.trioplanner.Uitiles.KEY_PASS_TRIP;
 import static com.example.trioplanner.Uitiles.TAG;
 
 public class Home extends AppCompatActivity implements
@@ -70,6 +73,7 @@ public class Home extends AppCompatActivity implements
     // MVP
     HomeContract.HomePresenter homePresenter;
     HomeContract.HomePresenter homePresenterDelere;
+    HomeContract.HomePresenter editTripPresenter;
 
     ProgressBar progressBar;
     // nav drawer
@@ -327,14 +331,17 @@ public class Home extends AppCompatActivity implements
                             trip delete from list
                             update it's status by id when click wheather start or canceled
                          */
-                    tripsList.remove(tripIndex);
-                    homeAdapter.notifyItemRemoved(tripIndex);
 
-                    // TODO just leave it for now until
-                    Intent intent = new Intent(Home.this, MainActivity.class);
-                    startActivity(intent);
+
+                    // send trip to start activity to extract data from it
+                    Intent startIntent = new Intent(Home.this, StartTripActivity.class);
+
+                    startIntent.putExtra(KEY_PASS_TRIP, tripsList.get(tripIndex));
+                    startActivity(startIntent);
                     Toast.makeText(Home.this, "Start Trip ", Toast.LENGTH_SHORT).show();
                     Log.i(TAG, "onSwiped: start pos " + tripIndex);
+                    tripsList.remove(tripIndex);
+                    homeAdapter.notifyItemRemoved(tripIndex);
                     break;
             }
 

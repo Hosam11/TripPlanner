@@ -36,7 +36,7 @@ public class Uitiles {
     }
 
 
-    public  static void showCustomDialog(View itemView, String notes, Context context) {
+    public  static void showCustomDialog(View itemView, String notes, Context context, String dialogeHead) {
         //before inflating the custom alert dialog layout,
         // we will get the current activity viewgroup
         ViewGroup viewGroup = itemView.findViewById(android.R.id.content);
@@ -55,6 +55,8 @@ public class Uitiles {
         AlertDialog alertDialog = builder.create();
         TextView tv = dialogView.findViewById(R.id.tvDialogeNotes);
         tv.setText(notes);
+        TextView tvHead = dialogView.findViewById(R.id.tvDialogeNotes);
+        tvHead.setText(dialogeHead);
         alertDialog.show();
     }
 }

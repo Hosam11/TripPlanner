@@ -18,6 +18,7 @@ import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.data.Trip;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
@@ -91,9 +92,11 @@ ViewEditTrip extends AppCompatActivity implements
             btnAddTime.setEnabled(true);
             isView = false;
         } else {
+            // TODO update that code with lat and long later
             //  name - startLoc -  endLoc -  date -  time -  type -  notes
             Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
-                    tripType, tripNotes, tripStatus, SAVED_ONLINE);
+                    tripType, tripNotes, tripStatus, SAVED_ONLINE
+                   );
             trip.setId(tripFormIntent.getId());
 
             // Edit in db

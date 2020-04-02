@@ -21,7 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -36,22 +35,16 @@
 
         <activity
             android:name=".TripsMapActivity"
-            android:label="@string/title_activity_trips_map">
-
-        </activity>
+            android:label="@string/title_activity_trips_map"></activity>
 
 
-        <activity android:name=".Test"></activity>
-
-      <activity
+        <activity
             android:name=".histroy_view.HistroyView"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ViewEditTrip" />
         <activity
             android:name=".HomeView.Home"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity android:name=".StartTripActivity"></activity>
 
 
@@ -75,7 +68,7 @@
                 <action android:name="com.example.snooze" />
             </intent-filter>
         </receiver>
-    
+
         <activity
             android:name=".AddTrip"
             android:screenOrientation="portrait" />
@@ -85,9 +78,6 @@
 
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".MainActivity">
-
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -95,13 +85,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity">
-
-        </activity>
-
-
-
-      
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
