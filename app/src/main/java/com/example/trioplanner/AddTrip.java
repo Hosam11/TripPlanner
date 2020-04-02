@@ -16,15 +16,16 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.data.Trip;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
@@ -92,7 +93,7 @@ public class AddTrip extends AppCompatActivity implements
         String latLagLoc1 = startPointLoc.latitude + "_" + startPointLoc.longitude;
         String latLagLoc2 = endPointLoc.latitude + "_" + endPointLoc.longitude;
         //  name - startLoc -  endLoc -  date -  time -  type -  notes
-        Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
+        Trip trip = new Trip(tripName, "tripStartPoint", "tripEndPoint", tripDate, tripTime,
                 tripType, tripNotes, tripStatus, SAVED_ONLINE);
         trip.setLatLngString1(latLagLoc1);
         trip.setLatLngString2(latLagLoc1);
@@ -165,10 +166,10 @@ public class AddTrip extends AppCompatActivity implements
         Places.initialize(getApplicationContext(), "AIzaSyDuifm35ZNF7OOG7exwhOrda3mb1H8qFnA");
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment1 = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.spoint);
+                getSupportFragmentManager().findFragmentById(R.id.spoint1);
 
         AutocompleteSupportFragment autocompleteFragment2 = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.epoint);
+                getSupportFragmentManager().findFragmentById(R.id.epoint1);
         // Set up a PlaceSelectionListener to handle the response.
         // Specify the types of place data to return.
         autocompleteFragment1.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME));

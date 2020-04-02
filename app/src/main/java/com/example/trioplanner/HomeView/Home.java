@@ -35,8 +35,16 @@ import com.example.trioplanner.StartTripActivity;
 import com.example.trioplanner.Uitiles;
 import com.example.trioplanner.data.Trip;
 import com.example.trioplanner.histroy_view.HistroyView;
+import com.example.trioplanner.login.LoginActivity;
+import com.example.trioplanner.login.SaveSharedPreference;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +90,7 @@ public class Home extends AppCompatActivity implements
     private NavigationView navigationView;
     private View navHeader;
     ImageView ivNavHeader;
+    private GoogleSignInClient mGoogleSignInClient;
     // toolBarAction
     private Toolbar mToolbar;
 
@@ -89,6 +98,13 @@ public class Home extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         tripsList = new ArrayList<>();
         empty_view = findViewById(R.id.empty_view);
@@ -140,6 +156,20 @@ public class Home extends AppCompatActivity implements
                     break;
                 case R.id.nav_log_out:
                     // TODO log-out btn
+                    // Firebase sign out
+                    SaveSharedPreference.setLoggedIn(getApplicationContext(), false);
+                    FirebaseAuth.getInstance().signOut();
+
+                    // Google sign out
+                    mGoogleSignInClient.signOut().addOnCompleteListener(Home.this,
+                            new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Intent i = new Intent(Home.this, LoginActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
                     Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_map:
