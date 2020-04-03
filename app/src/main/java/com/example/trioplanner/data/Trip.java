@@ -1,10 +1,6 @@
 package com.example.trioplanner.data;
 
-import android.location.Location;
-
 import androidx.annotation.NonNull;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 
@@ -29,6 +25,9 @@ public class Trip implements Serializable {
     */
     private String LatLngString1; // data like lat_log firstLocation
     private String LatLngString2; // data like lat_log
+
+    // id - name - startLoc - endLoc - date - time - type - notes -status -  isSavedOnline
+    // LatLngString1 -LatLngString2
 
     public Trip() {
     }
@@ -195,7 +194,8 @@ public class Trip implements Serializable {
     private String notes;
     private String status;
     */
-        return ("\nname >>   " + name + "\n" +
+        return ("\nid >>" + id + "\n" +
+                "name >>   " + name + "\n" +
                 "startLoc >>  " + startLoc + "\n" +
                 "endLoc >> " + endLoc + "\n" +
                 "data >> " + date + "\n" +

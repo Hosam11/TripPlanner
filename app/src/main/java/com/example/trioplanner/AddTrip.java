@@ -33,6 +33,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,6 +115,34 @@ public class AddTrip extends AppCompatActivity implements
                     tripType, tripNotes, tripStatus, SAVED_ONLINE);
             trip.setLatLngString1(latLagLoc1);
             trip.setLatLngString2(latLagLoc2);
+            trip.setId(UUID.randomUUID().toString());
+        //alarm manager
+            Intent intent = new Intent(AddTrip.this, AlertReceiver.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable(KEY_PASS_TRIP, trip);
+            intent.putExtra(KEY_PASS_TRIP, trip);
+//            intent.putExtras(bundle);
+            // id - name - startLoc - endLoc - date - time - type - notes -status -  isSavedOnline
+            // LatLngString1 -LatLngString2
+            intent.putExtra(Uitiles.ID, trip.getId());
+            intent.putExtra(Uitiles.NAME, trip.getName());
+            intent.putExtra(Uitiles.START_LOC, trip.getStartLoc());
+            intent.putExtra(Uitiles.END_LOC, trip.getEndLoc());
+            intent.putExtra(Uitiles.DATA, trip.getDate());
+            intent.putExtra(Uitiles.TIME, trip.getTime());
+            intent.putExtra(Uitiles.TYPE, trip.getType());
+            intent.putExtra(Uitiles.NOTES, trip.getNotes());
+            intent.putExtra(Uitiles.STATUS, trip.getStatus());
+            intent.putExtra(Uitiles.IS_SAVED_ONLINE, trip.getIsSavedOnline());
+            intent.putExtra(Uitiles.LAT_LNG_STRING_1, trip.getLatLngString1());
+            intent.putExtra(Uitiles.LAT_LNG_STRING_2, trip.getLatLngString2());
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pi = PendingIntent.getBroadcast(AddTrip.this,
+                    1, intent, 0);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+            //alarmManager.cancel(pi);
+
             if (checkInternetState(this)) {
                 trip.setIsSavedOnline(SAVED_ONLINE);
                 addTripPresenter.onSaveTrip(trip);
@@ -121,14 +150,7 @@ public class AddTrip extends AppCompatActivity implements
                 trip.setIsSavedOnline(SAVED_OFFLINE);
                 // TODO 1- Salah add to room DB
             }
-            //alarm manager
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(AddTrip.this, AlertReceiver.class);
-            intent.putExtra(KEY_PASS_TRIP, trip);
-            PendingIntent pi = PendingIntent.getBroadcast(AddTrip.this,
-                    1, intent, 0);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-            //alarmManager.cancel(pi);
+
             finish();
 
         }

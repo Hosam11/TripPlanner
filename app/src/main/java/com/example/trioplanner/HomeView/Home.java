@@ -385,10 +385,10 @@ public class Home extends AppCompatActivity implements
                             if (isUndoClickedNotClicked) {
                                 Log.i(TAG, "onDismissed: from isUndoClickedNotClicked");
                                 homePresenterDelere.onDeleteTrip(deletedTrip.getId());
-                                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                             /*   AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                                 Intent intent = new Intent(Home.this, AlertReceiver.class);
                                 PendingIntent pi = PendingIntent.getBroadcast(Home.this, 1, intent, 0);
-                                alarmManager.cancel(pi);
+                                alarmManager.cancel(pi);*/
 
                             }
                         }

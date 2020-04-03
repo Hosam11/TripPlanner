@@ -181,12 +181,12 @@ ViewEditTrip extends AppCompatActivity implements
                 trip.setIsSavedOnline(SAVED_ONLINE);
                 editTripPresenter.onUpdateTrip(trip.getId(), trip);
 
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+              /*  AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(ViewEditTrip.this, AlertReceiver.class);
                 PendingIntent pi = PendingIntent.getBroadcast(ViewEditTrip.this, 1, intent, 0);
                 alarmManager.cancel(pi);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
-
+*/
             } else {
                 trip.setIsSavedOnline(SAVED_OFFLINE);
                   /* TODO  2- salah edit in room or shpw that below message
