@@ -6,6 +6,9 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="deleteColor">#f00</color>
     <color name="startColor">#1AFF00</color>
+    <color name="background">#11173A</color>
+    <color name="textcolor">#C5AAAA</color>
+    <color name="redCar">#E84A3A</color>
 
 <!--    <color name="colorPrimary">#d32f2f</color>-->
 <!--    <color name="colorPrimaryDark">#c72c2c</color>-->

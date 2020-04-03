@@ -1,5 +1,7 @@
 package com.example.trioplanner.data;
 
+import android.location.Location;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -30,6 +32,7 @@ public class Trip implements Serializable {
 
     public Trip() {
     }
+
 
     public Trip(String name, String startLoc, String endLoc, String date,
                 String time, String type, String notes, String status, String isSavedOnline) {

@@ -13,7 +13,7 @@
         android:id="@+id/singleRowHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1A3B60">
+        android:background="@color/background">
 
         <ImageView
             android:id="@+id/imageView5"

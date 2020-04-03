@@ -6,12 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ViewEditTrip"
+    android:background="@color/background"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consAddTrip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/background">
 
         <TextView
             android:id="@+id/textView"
@@ -21,7 +23,7 @@
             android:layout_marginTop="24dp"
             android:fontFamily="serif"
             android:text="@string/trip_details"
-            android:textColor="#009688"
+            android:textColor="@color/redCar"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +38,9 @@
             android:layout_marginEnd="24dp"
             app:counterEnabled="true"
             app:counterMaxLength="20"
+
             app:endIconMode="custom"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:startIconDrawable="@drawable/ic_trip">
@@ -45,12 +49,14 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:ems="10"
-                android:enabled="false"
                 android:hint="@string/triptitle"
                 android:inputType="textPersonName"
                 android:text="nn"
-                android:textColorHint="#FFFFFF" />
+                android:textColor="@color/textcolor"
+                android:textColorHint="@color/textcolor" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView
@@ -105,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:enabled="false" />
         </androidx.cardview.widget.CardView>
+        >
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tripdate"
@@ -123,9 +130,14 @@
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:ems="10"
                 android:enabled="false"
-                android:inputType="date" />
+
+                android:inputType="date"
+                android:textColor="@color/textcolor"
+                android:textColorHint="@color/textcolor" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -159,9 +171,14 @@
                 android:id="@+id/time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:background="#FFFFFF"
                 android:ems="10"
                 android:enabled="false"
-                android:inputType="time" />
+                android:inputType="time"
+                android:textColor="@color/textcolor"
+                android:textColorHint="@color/textcolor" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -194,6 +211,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/notes"
+            android:textColor="@color/textcolor"
+            android:textColorHint="@color/textcolor"
             app:layout_constraintBottom_toTopOf="@id/tripnotes"
             app:layout_constraintStart_toStartOf="@id/tripnotes" />
 
@@ -205,7 +224,9 @@
             android:layout_marginTop="32dp"
             app:counterEnabled="true"
             app:counterMaxLength="100"
+
             app:endIconMode="custom"
+
             app:hintEnabled="false"
             app:layout_constraintStart_toStartOf="@id/endPoint"
             app:layout_constraintTop_toBottomOf="@+id/tripdate">
@@ -214,10 +235,12 @@
                 android:id="@+id/notes"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:ems="10"
-                android:enabled="false"
                 android:inputType="textMultiLine"
-                android:text="@string/date" />
+                android:text="@string/date"
+                android:textColor="@color/textcolor"
+                android:textColorHint="@color/textcolor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatCheckBox
@@ -225,8 +248,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:enabled="false"
             android:text="@string/roundtrip"
+            android:textColor="@color/textcolor"
+            android:textColorHighlight="#FFFFFF"
             app:layout_constraintStart_toStartOf="@id/tripnotes"
             app:layout_constraintTop_toBottomOf="@id/tripnotes" />
 
@@ -236,11 +260,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp"
             android:background="@drawable/button_bg_rounded_corners"
             android:text="@string/edit_trip"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/textcolor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/roundTrip" />
 
