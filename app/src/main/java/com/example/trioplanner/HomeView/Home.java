@@ -1,5 +1,8 @@
 package com.example.trioplanner.HomeView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -26,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trioplanner.AddTrip;
+import com.example.trioplanner.AlertReceiver;
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
@@ -40,6 +44,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -321,6 +326,10 @@ public class Home extends AppCompatActivity implements
                             if (isUndoClickedNotClicked) {
                                 Log.i(TAG, "onDismissed: from isUndoClickedNotClicked");
                                 homePresenterDelere.onDeleteTrip(deletedTrip.getId());
+                                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                Intent intent = new Intent(Home.this, AlertReceiver.class);
+                                PendingIntent pi =  PendingIntent.getBroadcast(Home.this,1,intent,0);
+                                alarmManager.cancel(pi);
                             }
                         }
                     }).show();

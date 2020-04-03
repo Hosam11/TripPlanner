@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.os.Build;
 
+import com.example.trioplanner.login.LoginActivity;
+
 import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, TripsMapActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
                 mediaPlayer.release();

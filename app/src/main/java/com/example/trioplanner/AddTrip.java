@@ -65,7 +65,6 @@ public class AddTrip extends AppCompatActivity implements
     @BindView(R.id.roundTrip)
     CheckBox round;
 
-   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @OnClick(R.id.add) void addTrip(View view){
         String tripName = name.getText().toString();
         String tripStartPoint = startPoint.getText().toString();
@@ -79,7 +78,7 @@ public class AddTrip extends AppCompatActivity implements
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(AddTrip.this,AlertReceiver.class);
         PendingIntent pi =  PendingIntent.getBroadcast(AddTrip.this,1,intent,0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
         //alarmManager.cancel(pi);
         //  name - startLoc -  endLoc -  date -  time -  type -  notes
         Trip trip = new Trip(tripName, tripStartPoint, tripEndPoint, tripDate, tripTime,
@@ -137,7 +136,6 @@ public class AddTrip extends AppCompatActivity implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.i("TAG", "onTimeSet: ");
         time.setText(hourOfDay + ":" + minute);
-
         c.set(Calendar.HOUR_OF_DAY,hourOfDay);
         c.set(Calendar.MINUTE,minute);
 
