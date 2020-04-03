@@ -20,7 +20,7 @@ public class SnoozeReceiver extends BroadcastReceiver {
         NotificationManagerCompat.from(context).cancel(1);
         //setting calender
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.MINUTE,5);
+        c.set(Calendar.MINUTE,15);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent alertIntent = new Intent(context,AlertReceiver.class);
         PendingIntent pi =  PendingIntent.getBroadcast(context,1,alertIntent,0);
