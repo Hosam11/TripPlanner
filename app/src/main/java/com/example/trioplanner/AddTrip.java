@@ -16,16 +16,14 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.data.Trip;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
@@ -41,9 +39,8 @@ import butterknife.OnClick;
 
 import static com.example.trioplanner.Uitiles.SAVED_OFFLINE;
 import static com.example.trioplanner.Uitiles.SAVED_ONLINE;
-import static com.example.trioplanner.Uitiles.checkInternetState;
-
 import static com.example.trioplanner.Uitiles.TAG;
+import static com.example.trioplanner.Uitiles.checkInternetState;
 
 
 public class AddTrip extends AppCompatActivity implements
@@ -68,64 +65,63 @@ public class AddTrip extends AppCompatActivity implements
     @BindView(R.id.roundTrip)
     CheckBox round;
 
-
-    @OnClick(R.id.add) void addTrip(View view){
-
     View view;
 
 
-    String tripStartPoint = "";
-    String tripEndPoint = "";
+    String tripNameStartPoint = "";
+    String tripNameEndPoint = "";
 
-    private LatLng startPointLoc;
-    private LatLng endPointLoc;
+    private LatLng latLngStartPointloc;
+    private LatLng latLngEndPointloc;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @OnClick(R.id.add)
+    void addTrip(View view) {
         String tripName = name.getText().toString();
-        // String tripStartPoint = startPoint.getText().toString();
-//        String tripEndPoint = endPoint.getText().toString();
+
         String tripDate = date.getText().toString();
         String tripTime = time.getText().toString();
         String tripNotes = notes.getText().toString();
         String tripType = String.valueOf(isRoundTrip());
         String tripStatus = Uitiles.STATUS_UPCOMING;
 
-        //alarm manager
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(AddTrip.this,AlertReceiver.class);
-        PendingIntent pi =  PendingIntent.getBroadcast(AddTrip.this,1,intent,0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
-        //alarmManager.cancel(pi);
-
-        String latLagLoc1 = startPointLoc.latitude + "_" + startPointLoc.longitude;
-        String latLagLoc2 = endPointLoc.latitude + "_" + endPointLoc.longitude;
         //  name - startLoc -  endLoc -  date -  time -  type -  notes
-        Trip trip = new Trip(tripName, "tripStartPoint", "tripEndPoint", tripDate, tripTime,
-                tripType, tripNotes, tripStatus, SAVED_ONLINE);
-        trip.setLatLngString1(latLagLoc1);
-        trip.setLatLngString2(latLagLoc1);
-//        trip.setStartPointLoc(startPointLoc);
-       // trip.setEndPointLoc(endPointLoc);
-        if (tripName.isEmpty() || tripStartPoint.isEmpty() || tripStartPoint.isEmpty()
-                || tripDate.isEmpty() || tripTime.isEmpty() || tripNotes.isEmpty()
-                || tripType.isEmpty() || tripStatus.isEmpty()) {
 
+        // if one of 7 filed is empty show dialog else save it im db
+        if (tripName.isEmpty() || tripNameStartPoint.isEmpty() || tripNameEndPoint.isEmpty()
+                || tripDate.isEmpty() || tripTime.isEmpty() || tripNotes.isEmpty()
+                || tripType.isEmpty()) {
             Uitiles.showCustomDialog(consViewGroup, "Please fill all fields", this, "Warning!");
 
         } else {
-
             //alarm manager
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(AddTrip.this, AlertReceiver.class);
             PendingIntent pi = PendingIntent.getBroadcast(AddTrip.this, 1, intent, 0);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
             //alarmManager.cancel(pi);
-            if (checkInternetState(this)) {
 
+            // came from coresponding methods below
+            String latLagLoc1 = latLngStartPointloc.latitude + "_" + latLngStartPointloc.longitude;
+            String latLagLoc2 = latLngEndPointloc.latitude + "_" + latLngEndPointloc.longitude;
+
+            //  name - startLoc -  endLoc -  date -  time -  type -  notes
+            Trip trip = new Trip(tripName,
+                    tripNameStartPoint, tripNameEndPoint,
+                    tripDate, tripTime,
+                    tripType, tripNotes, tripStatus, SAVED_ONLINE);
+            trip.setLatLngString1(latLagLoc1);
+            trip.setLatLngString2(latLagLoc2);
+
+            if (checkInternetState(this)) {
                 trip.setIsSavedOnline(SAVED_ONLINE);
                 addTripPresenter.onSaveTrip(trip);
             } else {
                 trip.setIsSavedOnline(SAVED_OFFLINE);
                 // TODO 1- Salah add to room DB
             }
+
             finish();
         }
 
@@ -163,7 +159,7 @@ public class AddTrip extends AppCompatActivity implements
         setContentView(R.layout.activity_add_trip);
         ButterKnife.bind(this);
 
-        Log.i(TAG, "{isEmpty} addTrip: if isEmpty " + tripStartPoint.isEmpty() );
+        Log.i(TAG, "{isEmpty} addTrip: if isEmpty " + tripNameStartPoint.isEmpty());
 
 
         addTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
@@ -185,8 +181,8 @@ public class AddTrip extends AppCompatActivity implements
         autocompleteFragment1.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                startPointLoc = place.getLatLng();
-                tripStartPoint = place.getName();
+                tripNameStartPoint = place.getName();
+                latLngStartPointloc = place.getLatLng();
                 // TODO: Hossam Get info about the selected place.
 //                Toast.makeText(getApplicationContext(), " " +
 //                        place.getLatLng(), Toast.LENGTH_SHORT).show();
@@ -203,11 +199,11 @@ public class AddTrip extends AppCompatActivity implements
         autocompleteFragment2.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                tripEndPoint = place.getName();
-                endPointLoc = place.getLatLng();
+                tripNameEndPoint = place.getName();
+                latLngEndPointloc = place.getLatLng();
 
-                Log.i(TAG, "##onPlaceSelected:## LatLng >> " +  place.getLatLng());
-                Log.i(TAG, "##onPlaceSelected:## LatLng >> " +  place.getLatLng().latitude);
+                Log.i(TAG, "##onPlaceSelected:## LatLng >> " + place.getLatLng());
+                Log.i(TAG, "##onPlaceSelected:## LatLng >> " + place.getLatLng().latitude);
 
                 // TODO: Hossam Get info about the selected place.
                 Toast.makeText(getApplicationContext(), " " + place.getName(), Toast.LENGTH_SHORT).show();
@@ -227,9 +223,9 @@ public class AddTrip extends AppCompatActivity implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Log.i("TAG", "onTimeSet: ");
         time.setText(hourOfDay + ":" + minute);
+
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
-
     }
 
     @Override
