@@ -186,23 +186,6 @@ public class HistroyView extends AppCompatActivity implements HomeContract.Histo
                             }
                         }
                     }).show();
-
-                    break;
-                case ItemTouchHelper.RIGHT:
-                        /*
-                            hold id of it then
-                            trip delete from list
-                            update it's status by id when click wheather start or canceled
-                         */
-                    tripsList.remove(tripIndex);
-                    histroyAdapter.notifyItemRemoved(tripIndex);
-
-                    // TODO just leave it for now until
-
-                  /*  Intent intent = new Intent(HistroyView.this, MainActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(Home.this, "Start Trip ", Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, "onSwiped: start pos " + tripIndex);*/
                     break;
             }
 

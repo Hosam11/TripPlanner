@@ -36,11 +36,22 @@ import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
 import com.example.trioplanner.MainActivity;
 import com.example.trioplanner.R;
 import com.example.trioplanner.TripsMapActivity;
+
+import com.example.trioplanner.StartTripActivity;
+
 import com.example.trioplanner.Uitiles;
 import com.example.trioplanner.data.Trip;
 import com.example.trioplanner.histroy_view.HistroyView;
+import com.example.trioplanner.login.LoginActivity;
+import com.example.trioplanner.login.SaveSharedPreference;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,6 +60,8 @@ import java.util.List;
 
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+import static com.example.trioplanner.Uitiles.KEY_PASS_TRIP;
 import static com.example.trioplanner.Uitiles.TAG;
 
 public class Home extends AppCompatActivity implements
@@ -77,6 +90,7 @@ public class Home extends AppCompatActivity implements
     // MVP
     HomeContract.HomePresenter homePresenter;
     HomeContract.HomePresenter homePresenterDelere;
+    HomeContract.HomePresenter editTripPresenter;
 
     ProgressBar progressBar;
     // nav drawer
@@ -85,6 +99,7 @@ public class Home extends AppCompatActivity implements
     private NavigationView navigationView;
     private View navHeader;
     ImageView ivNavHeader;
+    private GoogleSignInClient mGoogleSignInClient;
     // toolBarAction
     private Toolbar mToolbar;
 
@@ -92,6 +107,13 @@ public class Home extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         tripsList = new ArrayList<>();
         empty_view = findViewById(R.id.empty_view);
@@ -143,6 +165,20 @@ public class Home extends AppCompatActivity implements
                     break;
                 case R.id.nav_log_out:
                     // TODO log-out btn
+                    // Firebase sign out
+                    SaveSharedPreference.setLoggedIn(getApplicationContext(), false);
+                    FirebaseAuth.getInstance().signOut();
+
+                    // Google sign out
+                    mGoogleSignInClient.signOut().addOnCompleteListener(Home.this,
+                            new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Intent i = new Intent(Home.this, LoginActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
                     Toast.makeText(Home.this, "log", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_map:
@@ -330,6 +366,7 @@ public class Home extends AppCompatActivity implements
                                 Intent intent = new Intent(Home.this, AlertReceiver.class);
                                 PendingIntent pi =  PendingIntent.getBroadcast(Home.this,1,intent,0);
                                 alarmManager.cancel(pi);
+
                             }
                         }
                     }).show();
@@ -341,14 +378,17 @@ public class Home extends AppCompatActivity implements
                             trip delete from list
                             update it's status by id when click wheather start or canceled
                          */
-                    tripsList.remove(tripIndex);
-                    homeAdapter.notifyItemRemoved(tripIndex);
 
-                    // TODO just leave it for now until
-                    Intent intent = new Intent(Home.this, MainActivity.class);
-                    startActivity(intent);
+
+                    // send trip to start activity to extract data from it
+                    Intent startIntent = new Intent(Home.this, StartTripActivity.class);
+
+                    startIntent.putExtra(KEY_PASS_TRIP, tripsList.get(tripIndex));
+                    startActivity(startIntent);
                     Toast.makeText(Home.this, "Start Trip ", Toast.LENGTH_SHORT).show();
                     Log.i(TAG, "onSwiped: start pos " + tripIndex);
+                    tripsList.remove(tripIndex);
+                    homeAdapter.notifyItemRemoved(tripIndex);
                     break;
             }
 
@@ -367,6 +407,13 @@ public class Home extends AppCompatActivity implements
         super.onDestroy();
         Log.i(TAG, "onDestroy: ");
       //  homePresenter.onGetUpcomingTrips();
+    }
+
+    @Override
+    public void onBackPressed() {
+//        finish();
+        super.onBackPressed();
+        //Toast.makeText(this, "backPress()", Toast.LENGTH_SHORT).show();
     }
 }
 

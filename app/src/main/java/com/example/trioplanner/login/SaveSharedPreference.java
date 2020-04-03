@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-class SaveSharedPreference {
+public class SaveSharedPreference {
     private static final String LOGGED_IN_PREF = "logged_in_status" ;
 
     static SharedPreferences getPreferences(Context context) {
