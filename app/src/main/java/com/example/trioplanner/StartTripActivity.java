@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +34,21 @@ public class StartTripActivity extends AppCompatActivity implements HomeContract
         //todo get lat and long from intent
         Intent intent = getIntent();
         mTrip = (Trip) intent.getSerializableExtra(Uitiles.KEY_PASS_TRIP);
+        if (mTrip == null) {
+            // build mTrip from strings
+            mTrip.setId(intent.getStringExtra(Uitiles.ID));
+            mTrip.setName(intent.getStringExtra(Uitiles.NAME));
+            mTrip.setStartLoc(intent.getStringExtra(Uitiles.START_LOC));
+            mTrip.setEndLoc(intent.getStringExtra(Uitiles.END_LOC));
+            mTrip.setDate(intent.getStringExtra(Uitiles.DATA));
+            mTrip.setTime(intent.getStringExtra(Uitiles.TIME));
+            mTrip.setType(intent.getStringExtra(Uitiles.TYPE));
+            mTrip.setNotes(intent.getStringExtra(Uitiles.NOTES));
+            mTrip.setStatus(intent.getStringExtra(Uitiles.STATUS));
+            mTrip.setIsSavedOnline(intent.getStringExtra(Uitiles.IS_SAVED_ONLINE));
+            mTrip.setLatLngString1(intent.getStringExtra(Uitiles.LAT_LNG_STRING_1));
+            mTrip.setLatLngString2(intent.getStringExtra(Uitiles.LAT_LNG_STRING_2));
+        }
         editTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
         mTrip.setStatus(Uitiles.STATUS_DONE);
         editTripPresenter.onUpdateTrip(mTrip.getId(), mTrip);

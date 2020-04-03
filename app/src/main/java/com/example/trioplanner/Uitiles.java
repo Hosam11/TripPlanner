@@ -21,6 +21,23 @@ public class Uitiles {
     public static final String STATUS_CANCELED = "canceled";
     public static final String STATUS_DONE = "done";
 
+    // strings for passing intent bject by keys
+    // id - name - startLoc - endLoc - date - time - type - notes -status -  isSavedOnline
+    // LatLngString1 -LatLngString2
+
+    public static final String ID = "_id";
+    public static final String NAME = "_name";
+    public static final String START_LOC = "_startLoc";
+    public static final String END_LOC = "_endLoc";
+    public static final String DATA = "_date";
+    public static final String TIME = "_time";
+    public static final String TYPE = "_type";
+    public static final String NOTES = "_notes";
+    public static final String STATUS = "_status";
+    public static final String IS_SAVED_ONLINE = "_isSavedOnline";
+    public static final String LAT_LNG_STRING_1 = "_LatLngString1";
+    public static final String LAT_LNG_STRING_2 = "_LatLngString2";
+
 
     /**
      * @param context: context that called the method
