@@ -93,12 +93,11 @@ public class FirebaseModelImpl implements HomeContract.FirebaseModel {
         } else {
             id = trip.getId();
             // coz a trip comming wihtout id attribute
-
-            trip.setId(id);
+          //  trip.setId(id);
             Log.i(TAG, "FirebaseModelImpl >> saveTripToFB: >> id  not null" +
                     ""  + id );
         }
-//        trip.set
+        // trip.set
         Task saveTask = dbReference.child(id).setValue(trip);
         this.saveTripListener = saveTripListener;
 
