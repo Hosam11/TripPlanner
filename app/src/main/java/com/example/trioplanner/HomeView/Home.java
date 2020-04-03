@@ -183,9 +183,7 @@ public class Home extends AppCompatActivity implements
                     break;
                 case R.id.nav_map:
                     Intent intent = new Intent(Home.this, TripsMapActivity.class);
-                    Bundle args = new Bundle();
-                    args.putSerializable("ARRAYLIST",(Serializable) tripsList);
-                    intent.putExtra("BUNDLE",args);
+                    intent.putExtra("trips", (Serializable) tripsList);
                     startActivity(intent);
                     break;
                 default:

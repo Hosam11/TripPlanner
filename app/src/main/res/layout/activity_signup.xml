@@ -4,13 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:background="#fff"
+        android:background="@color/background"
         android:orientation="vertical"
         android:padding="20dp"
         tools:context=".signup.SignupActivity">
@@ -19,7 +20,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:src="@drawable/icon"></ImageView>
+            android:src="@drawable/splash"></ImageView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
             android:fontFamily="@font/bungee"
             android:gravity="center_horizontal"
             android:text="@string/welcome_signup"
-            android:textColor="#000"
+            android:textColor="@color/textcolor"
             android:textSize="40sp">
 
         </TextView>
@@ -35,7 +36,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/signup_to_organize_your_journey"></TextView>
+            android:text="@string/signup_to_organize_your_journey"
+            android:textColor="@color/textcolor"></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +64,10 @@
                     android:id="@+id/emailEd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
+                    android:background="#FFFFFF"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/textcolor"
+                    android:textColorHint="@color/textcolor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,6 +90,7 @@
                     android:id="@+id/passwordED"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,6 +105,7 @@
                     android:id="@+id/passwordED2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,7 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="#000"
+                android:background="@color/redCar"
+                android:hapticFeedbackEnabled="false"
                 android:text="@string/go"
                 android:textColor="#fff" />
 
@@ -121,7 +129,7 @@
                 android:background="#00000000"
                 android:elevation="0dp"
                 android:text="Already have an account? Login"
-                android:textColor="#000" />
+                android:textColor="@color/textcolor" />
 
         </LinearLayout>
 

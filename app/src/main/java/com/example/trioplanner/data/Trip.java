@@ -11,8 +11,6 @@ public class Trip implements Serializable {
     private String id; // will add to trip by firebase {getKey}
     private String name;
     private String startLoc;
-    private Location start;
-    private Location end;
     private String endLoc;
     private String date;
     private String time;
@@ -33,21 +31,6 @@ public class Trip implements Serializable {
     public Trip() {
     }
 
-    public void setStart(Location start) {
-        this.start = start;
-    }
-
-    public Location getStart() {
-        return start;
-    }
-
-    public void setEnd(Location end) {
-        this.end = end;
-    }
-
-    public Location getEnd() {
-        return end;
-    }
 
     public Trip(String name, String startLoc, String endLoc, String date,
                 String time, String type, String notes, String status, String isSavedOnline) {
