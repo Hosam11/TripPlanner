@@ -13,20 +13,17 @@ public interface HomeContract {
     }
 
     interface HomeView extends Progress {
-
         // return all trips to view to update ui
         void getUpcomingTrips(List<Trip> trips);
-
     }
 
     interface AddTripView {
         // return string to ui wheart succes or not
         void onTripSaveSuccess(String state);
-
     }
 
     interface DeleteTrip {
-        // return string to ui wheart succes or not
+        // return string to ui wheaher succes or not
         void onDeleteTripSuccess(String state);
     }
 
@@ -38,16 +35,13 @@ public interface HomeContract {
         void onGetUpcomingTrips();
 
         void onGetHistoryTrips();
-
         // will be in the Impl call back method recive data changed succsess or not
         // void onTripSaveFailed(String state);
-
         void onDeleteTrip(String id);
 
         void onUpdateTrip(String id, Trip trip);
 
     }
-
 
     interface EditTripView {
         void onUpdateTripSuccrss(String state);

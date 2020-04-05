@@ -67,11 +67,12 @@ public class AlertReceiver extends BroadcastReceiver {
         start.putExtra(Uitiles.IS_SAVED_ONLINE, trip.getIsSavedOnline());
         start.putExtra(Uitiles.LAT_LNG_STRING_1, trip.getLatLngString1());
         start.putExtra(Uitiles.LAT_LNG_STRING_2, trip.getLatLngString2());
-//        start.putExtra(KEY_PASS_TRIP, mTrip);
+        start.putExtra(KEY_PASS_TRIP, mTrip);
         PendingIntent startP = PendingIntent.getActivity(c, 0, start, 0);
         Intent snooze = new Intent("com.example.snooze");
         PendingIntent snoozeP = PendingIntent.getBroadcast(c, 0, snooze, PendingIntent.FLAG_UPDATE_CURRENT);
         Intent cancel = new Intent("com.example.cancel");
+        cancel.putExtra(KEY_PASS_TRIP, mTrip);
         cancel.putExtra(Uitiles.ID, trip.getId());
         cancel.putExtra(Uitiles.NAME, trip.getName());
         cancel.putExtra(Uitiles.START_LOC, trip.getStartLoc());
@@ -83,10 +84,11 @@ public class AlertReceiver extends BroadcastReceiver {
         cancel.putExtra(Uitiles.IS_SAVED_ONLINE, trip.getIsSavedOnline());
         cancel.putExtra(Uitiles.LAT_LNG_STRING_1, trip.getLatLngString1());
         cancel.putExtra(Uitiles.LAT_LNG_STRING_2, trip.getLatLngString2());
-//        cancel.putExtra(KEY_PASS_TRIP, mTrip);
+
         PendingIntent cancelP = PendingIntent.getBroadcast(c,
                 0, cancel, PendingIntent.FLAG_CANCEL_CURRENT);
-        @SuppressLint("ResourceAsColor") Notification notification = new NotificationCompat.Builder(c, "ChannelID").
+        @SuppressLint("ResourceAsColor") Notification notification =
+                new NotificationCompat.Builder(c, "ChannelID").
                 setContentTitle(mTrip.getName()).
                 setContentText("Do you want to start your trip now ?")
                 .setSmallIcon(R.drawable.ic_trip)
