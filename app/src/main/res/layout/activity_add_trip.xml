@@ -231,7 +231,6 @@
                 android:ems="10"
 
                 android:inputType="textMultiLine"
-                android:text="@string/date"
                 android:textColor="@color/textcolor"
                 android:textColorHint="@color/textcolor" />
 

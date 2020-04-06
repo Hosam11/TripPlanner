@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.core.app.NotificationManagerCompat;
 
@@ -15,6 +16,7 @@ import com.example.trioplanner.data.Trip;
 public class DismissNotificationReceiver extends BroadcastReceiver implements HomeContract.EditTripView
 {
 
+    private static final String TAG = "hproj";
     Trip mTrip;
     HomeContract.HomePresenter editTripPresenter;
 
@@ -37,6 +39,7 @@ public class DismissNotificationReceiver extends BroadcastReceiver implements Ho
             mTrip.setLatLngString1(intent.getStringExtra(Uitiles.LAT_LNG_STRING_1));
             mTrip.setLatLngString2(intent.getStringExtra(Uitiles.LAT_LNG_STRING_2));
         }
+        Log.i(TAG, "onReceive: fom dismiss " + mTrip.toString());
         editTripPresenter = new HomePresenterImpl(new FirebaseModelImpl(), this);
         mTrip.setStatus(Uitiles.STATUS_CANCELED);
         editTripPresenter.onUpdateTrip(mTrip.getId(), mTrip);
