@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.trioplanner.FirebaseDBOperation.FirebaseModelImpl;
 import com.example.trioplanner.FirebaseDBOperation.HomeContract;
 import com.example.trioplanner.FirebaseDBOperation.HomePresenterImpl;
@@ -32,10 +33,13 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Arrays;
 import java.util.Calendar;
+
+import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.example.trioplanner.Uitiles.KEY_PASS_TRIP;
 import static com.example.trioplanner.Uitiles.SAVED_OFFLINE;
 import static com.example.trioplanner.Uitiles.SAVED_ONLINE;
 import static com.example.trioplanner.Uitiles.TAG;
@@ -67,18 +71,20 @@ public class AddTrip extends AppCompatActivity implements
     View view;
 
 
+    //start  those value came form methods below
     String tripNameStartPoint = "";
     String tripNameEndPoint = "";
 
     private LatLng latLngStartPointloc;
     private LatLng latLngEndPointloc;
+    //end those value came form methods below
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @OnClick(R.id.add)
+
     void addTrip(View view) {
         String tripName = name.getText().toString();
-
         String tripDate = date.getText().toString();
         String tripTime = time.getText().toString();
         String tripNotes = notes.getText().toString();
@@ -90,20 +96,17 @@ public class AddTrip extends AppCompatActivity implements
         // if one of 7 filed is empty show dialog else save it im db
         if (tripName.isEmpty() || tripNameStartPoint.isEmpty() || tripNameEndPoint.isEmpty()
                 || tripDate.isEmpty() || tripTime.isEmpty() || tripNotes.isEmpty()
-                || tripType.isEmpty()) {
+               ) {
             Uitiles.showCustomDialog(consViewGroup, "Please fill all fields", this, "Warning!");
-
         } else {
-            //alarm manager
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(AddTrip.this, AlertReceiver.class);
-            PendingIntent pi = PendingIntent.getBroadcast(AddTrip.this, 1, intent, 0);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-            //alarmManager.cancel(pi);
 
             // came from coresponding methods below
-            String latLagLoc1 = latLngStartPointloc.latitude + "_" + latLngStartPointloc.longitude;
-            String latLagLoc2 = latLngEndPointloc.latitude + "_" + latLngEndPointloc.longitude;
+            String latLagLoc1 = latLngStartPointloc.latitude
+                    + "_"
+                    + latLngStartPointloc.longitude;
+            String latLagLoc2 = latLngEndPointloc.latitude
+                    + "_"
+                    + latLngEndPointloc.longitude;
 
             //  name - startLoc -  endLoc -  date -  time -  type -  notes
             Trip trip = new Trip(tripName,
@@ -112,6 +115,33 @@ public class AddTrip extends AppCompatActivity implements
                     tripType, tripNotes, tripStatus, SAVED_ONLINE);
             trip.setLatLngString1(latLagLoc1);
             trip.setLatLngString2(latLagLoc2);
+            trip.setId(UUID.randomUUID().toString());
+        //alarm manager
+            Intent intent = new Intent(AddTrip.this, AlertReceiver.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable(KEY_PASS_TRIP, trip);
+            intent.putExtra(KEY_PASS_TRIP, trip);
+//            intent.putExtras(bundle);
+            // id - name - startLoc - endLoc - date - time - type - notes -status -  isSavedOnline
+            // LatLngString1 -LatLngString2
+            intent.putExtra(Uitiles.ID, trip.getId());
+            intent.putExtra(Uitiles.NAME, trip.getName());
+            intent.putExtra(Uitiles.START_LOC, trip.getStartLoc());
+            intent.putExtra(Uitiles.END_LOC, trip.getEndLoc());
+            intent.putExtra(Uitiles.DATA, trip.getDate());
+            intent.putExtra(Uitiles.TIME, trip.getTime());
+            intent.putExtra(Uitiles.TYPE, trip.getType());
+            intent.putExtra(Uitiles.NOTES, trip.getNotes());
+            intent.putExtra(Uitiles.STATUS, trip.getStatus());
+            intent.putExtra(Uitiles.IS_SAVED_ONLINE, trip.getIsSavedOnline());
+            intent.putExtra(Uitiles.LAT_LNG_STRING_1, trip.getLatLngString1());
+            intent.putExtra(Uitiles.LAT_LNG_STRING_2, trip.getLatLngString2());
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pi = PendingIntent.getBroadcast(AddTrip.this,
+                    1, intent, 0);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+            //alarmManager.cancel(pi);
 
             if (checkInternetState(this)) {
                 trip.setIsSavedOnline(SAVED_ONLINE);
@@ -122,6 +152,7 @@ public class AddTrip extends AppCompatActivity implements
             }
 
             finish();
+
         }
 
     }
@@ -205,7 +236,7 @@ public class AddTrip extends AppCompatActivity implements
                 Log.i(TAG, "##onPlaceSelected:## LatLng >> " + place.getLatLng().latitude);
 
                 // TODO: Hossam Get info about the selected place.
-                Toast.makeText(getApplicationContext(), " " + place.getName(), Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(), " " + place.getName(), Toast.LENGTH_SHORT).show();
                 Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
             }
 
@@ -228,10 +259,12 @@ public class AddTrip extends AppCompatActivity implements
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        date.setText(dayOfMonth + "/" + month + "/" + year);
+        Calendar c = Calendar.getInstance();
+
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        date.setText(dayOfMonth + "/" + month + "/" + year);
 
     }
 

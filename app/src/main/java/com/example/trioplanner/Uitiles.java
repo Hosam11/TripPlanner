@@ -1,6 +1,8 @@
 package com.example.trioplanner;
 
+import android.app.AlarmManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.LayoutInflater;
@@ -19,6 +21,23 @@ public class Uitiles {
     public static final String STATUS_CANCELED = "canceled";
     public static final String STATUS_DONE = "done";
 
+    // strings for passing intent bject by keys
+    // id - name - startLoc - endLoc - date - time - type - notes -status -  isSavedOnline
+    // LatLngString1 -LatLngString2
+
+    public static final String ID = "_id";
+    public static final String NAME = "_name";
+    public static final String START_LOC = "_startLoc";
+    public static final String END_LOC = "_endLoc";
+    public static final String DATA = "_date";
+    public static final String TIME = "_time";
+    public static final String TYPE = "_type";
+    public static final String NOTES = "_notes";
+    public static final String STATUS = "_status";
+    public static final String IS_SAVED_ONLINE = "_isSavedOnline";
+    public static final String LAT_LNG_STRING_1 = "_LatLngString1";
+    public static final String LAT_LNG_STRING_2 = "_LatLngString2";
+
 
     /**
      * @param context: context that called the method
@@ -33,8 +52,10 @@ public class Uitiles {
         } else {
             return false;
         }
-    }
 
+
+
+    }
 
     public  static void showCustomDialog(View itemView, String notes, Context context, String dialogeHead) {
         //before inflating the custom alert dialog layout,
@@ -48,14 +69,14 @@ public class Uitiles {
         //Now we need an AlertDialog.Builder object
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-//        setting the view of the builder to our custom view that we already inflated
+        //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
         TextView tv = dialogView.findViewById(R.id.tvDialogeNotes);
         tv.setText(notes);
-        TextView tvHead = dialogView.findViewById(R.id.tvDialogeNotes);
+        TextView tvHead = dialogView.findViewById(R.id.dialogeHead);
         tvHead.setText(dialogeHead);
         alertDialog.show();
     }

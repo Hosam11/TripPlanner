@@ -70,6 +70,7 @@ public class HomePresenterImpl implements HomeContract.HomePresenter,
     public void onGetHistoryTrips() {
         historyView.showProgress();
         firebaseModel.getHistroyTrips(this);
+
     }
 
     @Override

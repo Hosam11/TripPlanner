@@ -1,10 +1,9 @@
 package com.example.trioplanner.data;
 
-import android.location.Location;
-
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+
 
 public class Trip implements Serializable {
     // auto-geneterd
@@ -20,13 +19,15 @@ public class Trip implements Serializable {
     private String status;
     // t or f
     private String isSavedOnline; // t of online - f for saved offline
-/*
-    private LatLng startPointLoc;
-    private LatLng endPointLoc;
-*/
-
+    /*
+        private LatLng startPointLoc;
+        private LatLng endPointLoc;
+    */
     private String LatLngString1; // data like lat_log firstLocation
     private String LatLngString2; // data like lat_log
+
+    // id - name - startLoc - endLoc - date - time - type - notes -status -  isSavedOnline
+    // LatLngString1 -LatLngString2
 
     public Trip() {
     }
@@ -46,16 +47,16 @@ public class Trip implements Serializable {
 
     }
 
+    public String getLatLngString1() {
+        return LatLngString1;
+    }
+
     public void setLatLngString1(String latLngString1) {
         LatLngString1 = latLngString1;
     }
 
-    public void setLatLngString2(String latLngString2) {
-        LatLngString2 = latLngString2;
-    }
-
-    public String getLatLngString1() {
-        return LatLngString1;
+    public String getLatLngString2() {
+        return LatLngString2;
     }
 
    /* public Trip(String name, String startLoc,
@@ -77,8 +78,8 @@ public class Trip implements Serializable {
         this.endPointLoc = endPointLoc;
     }*/
 
-    public String getLatLngString2() {
-        return LatLngString2;
+    public void setLatLngString2(String latLngString2) {
+        LatLngString2 = latLngString2;
     }
 
  /*   public LatLng getStartPointLoc() {
@@ -193,14 +194,17 @@ public class Trip implements Serializable {
     private String notes;
     private String status;
     */
-        return ("\nname >>   " + name + "\n" +
+        return ("\nid >>" + id + "\n" +
+                "name >>   " + name + "\n" +
                 "startLoc >>  " + startLoc + "\n" +
                 "endLoc >> " + endLoc + "\n" +
                 "data >> " + date + "\n" +
                 "type >> " + type + "\n" +
                 "time >> " + time + "\n" +
                 "notes >> " + notes + "\n" +
-                "status >> " + status + "\n");
+                "status >> " + status + "\n" +
+                "latlng 1 >> " + LatLngString1 + "\n" +
+                "latlm=ng 2 >> " + LatLngString2 + "\n");
 
     }
 }

@@ -61,7 +61,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFFFFF"
-                    android:text="h@h.com" />
+                 />
+
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,9 +78,11 @@
                     android:id="@+id/password_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:background="#FFFFFF"
                     android:inputType="textPassword"
-                    android:text="123456" />
+                     />
+
 
             </com.google.android.material.textfield.TextInputLayout>
 
