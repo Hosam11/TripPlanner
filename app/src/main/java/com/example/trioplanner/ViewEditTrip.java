@@ -1,3 +1,4 @@
+
 package com.example.trioplanner;
 
 import android.app.AlarmManager;
@@ -334,3 +335,4 @@ ViewEditTrip extends AppCompatActivity implements
         //  Toast.makeText(this, state, Toast.LENGTH_SHORT).show();
     }
 }
+
