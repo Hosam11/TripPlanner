@@ -10,7 +10,7 @@ notes.
   past trips
 - the application store data to firebase and also provide authentication to users 
 
-# Screens
+# Screenshots
 
 |  | |  |  |
 | :---: |:---:| :---: |:---:| 
